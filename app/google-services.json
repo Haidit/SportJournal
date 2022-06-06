@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "878292150713",
+    "project_id": "sport-journal-d4b7d",
+    "storage_bucket": "sport-journal-d4b7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878292150713:android:d204a100a3ecefe9b6ee68",
+        "android_client_info": {
+          "package_name": "com.example.sportjournal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "878292150713-jvih19h8mijnsm6plv9el3vcgo4ufguf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLrrPLbH8NDABJ4lduwp1SWpLDo7nRJEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "878292150713-jvih19h8mijnsm6plv9el3vcgo4ufguf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,79 @@
+<resources>
+    <string name="app_name">Sport Journal</string>
+
+    <string name="Workouts">Workouts</string>
+    <string name="addWorkout">Add workout</string>
+    <string name="newWorkout">New workout</string>
+    <string name="Date">Date</string>
+    <string name="workoutsName">Workout\'s name</string>
+    <string name="newRound">Add an exercise</string>
+    <string name="pickAnExercise">Pick an exercise</string>
+    <string name="exerciseRepeats">Number of repeats</string>
+    <string name="exerciseWeight">Weight</string>
+    <string name="seriesNumber">Series</string>
+    <string name="restTime">Rest time</string>
+
+    <string name="Plans">Plans</string>
+    <string name="CreatePlan">Create a plan</string>
+
+    <string name="Calendar">Calendar</string>
+
+
+    <string name="Statistics">Statistics</string>
+    <string name="SPLASH">SPLASH</string>
+    <string name="done">Done</string>
+    <string name="WIP">Work in progress</string>
+    <string name="enterPhoneNumber">Enter your phone number</string>
+    <string name="enterCode">Enter Code</string>
+    <string name="WeSendCode">We send you a code via sms</string>
+    <string name="SendCode">Send a code</string>
+    <string name="enterEmail">Email</string>
+    <string name="enterPassword">Password</string>
+    <string name="auth">Sign in</string>
+    <string name="registration">Create account</string>
+    <string name="required">Required</string>
+    <string name="AuthFail">Authentication failed.</string>
+    <string name="welcome">Welcome!</string>
+    <string name="enterUsername">Enter your username</string>
+    <string name="enterSport">Enter your sport</string>
+    <string name="DOB">Birthday</string>
+    <string name="gender_male">male</string>
+    <string name="gender_female">female</string>
+    <string name="gender_unknown">Rather not say</string>
+    <string name="enter_your_gender">Enter your gender</string>
+    <string name="saveWorkout">Save workout</string>
+    <string name="workout_difficulty">Difficulty: %1$d</string>
+    <string name="WorkoutReview">Workout review</string>
+    <string name="log_out">Log out</string>
+    <string name="delete">Delete</string>
+    <string name="workout_delete_alert">Workout will be deleted</string>
+    <string name="alert_check">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="enter_workout_desc">Enter your notes here</string>
+    <string name="nextStep">Next step</string>
+    <string name="pickADate">Pick a date</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="addPlan">Create new plan</string>
+    <string name="Plan">Plan</string>
+    <string name="save_changes">Changes will be saved</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_new_plan">Add new plan</string>
+    <string name="plan_name">Plan name</string>
+    <string name="newRoutine">New routine</string>
+    <string name="newRoutineName">New routine\'s name</string>
+    <string name="dayOfPlan">Day of the plan</string>
+    <string name="addRound">Add round</string>
+    <string name="routinePerDayNumber">Workout\'s number this day</string>
+    <string name="saveButton">Save</string>
+    <string name="plan_delete_alert">Plan will be deleted</string>
+    <string name="reps">Reps: %1$d</string>
+    <string name="weight">"Weight: %1$d kg"</string>
+    <string name="rest">Rest: %1$d sec</string>
+    <string name="routineDay">"Day: %1$d"</string>
+    <string name="routineNumber">"workout number: %1$d"</string>
+    <string name="choose_plan">Choose a plan</string>
+    <string name="choose_routine">Choose a routine</string>
+    <string name="addWorkoutFromPlan">Add workout from the plan</string>
+
+</resources>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/navigation2">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.sportjournal.fragments.CalendarFragment"
+        android:label="CalendarFragment" />
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="com.example.sportjournal.fragments.StatisticsFragment"
+        android:label="StatisticsFragment" />
+    <navigation
+        android:id="@+id/navigation"
+        app:startDestination="@id/plansFragment">
+        <fragment
+            android:id="@+id/plansFragment"
+            android:name="com.example.sportjournal.fragments.PlansFragment"
+            android:label="PlansFragment">
+            <action
+                android:id="@+id/action_plansFragment_to_planDetailsFragment"
+                app:destination="@id/planDetailsFragment" />
+            <action
+                android:id="@+id/action_plansFragment_to_createPlanDialogFragment"
+                app:destination="@id/createPlanDialogFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/planDetailsFragment"
+            android:name="com.example.sportjournal.fragments.PlanDetailsFragment"
+            android:label="PlanDetailsFragment">
+            <argument android:name="planName" />
+            <action
+                android:id="@+id/action_planDetailsFragment_to_createRoutineFragment"
+                app:destination="@id/createRoutineFragment" />
+            <argument android:name="planId" />
+            <action
+                android:id="@+id/action_planDetailsFragment_to_plansFragment"
+                app:destination="@id/plansFragment"
+                app:popUpTo="@id/navigation"
+                app:popUpToInclusive="true"/>
+        </fragment>
+        <dialog
+            android:id="@+id/createPlanDialogFragment"
+            android:name="com.example.sportjournal.fragments.CreatePlanDialogFragment"
+            android:label="CreatePlanDialogFragment">
+            <action
+                android:id="@+id/action_createPlanDialogFragment_to_planDetailsFragment"
+                app:destination="@id/planDetailsFragment" />
+            <action
+                android:id="@+id/action_createPlanDialogFragment_to_plansFragment"
+                app:destination="@id/plansFragment" />
+        </dialog>
+        <fragment
+            android:id="@+id/createRoutineFragment"
+            android:name="com.example.sportjournal.fragments.CreateRoutineFragment"
+            android:label="CreateRoutineFragment">
+            <action
+                android:id="@+id/action_createRoutineFragment_to_planDetailsFragment"
+                app:destination="@id/planDetailsFragment"
+                app:popUpTo="@id/navigation"
+                app:popUpToInclusive="true" />
+            <argument android:name="planId" />
+            <argument android:name="planName" />
+            <argument android:name="routineId" />
+        </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/navigation2"
+        app:startDestination="@id/workoutsFragment">
+        <fragment
+            android:id="@+id/workoutsFragment"
+            android:name="com.example.sportjournal.fragments.WorkoutsFragment"
+            android:label="WorkoutsFragment">
+            <action
+                android:id="@+id/action_workoutsFragment_to_createWorkoutFragment"
+                app:destination="@id/createWorkoutFragment" />
+            <action
+                android:id="@+id/action_workoutsFragment_to_workoutDetailsFragment"
+                app:destination="@id/workoutDetailsFragment" />
+            <action
+                android:id="@+id/action_workoutsFragment_to_createWorkoutFragment2"
+                app:destination="@id/createWorkoutFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/createWorkout2Fragment"
+            android:name="com.example.sportjournal.fragments.CreateWorkout2Fragment"
+            android:label="CreateWorkout2Fragment">
+            <action
+                android:id="@+id/action_createWorkout2Fragment_to_workoutsFragment"
+                app:destination="@id/workoutsFragment"
+                app:popUpTo="@+id/nav_graph_main"
+                app:popUpToInclusive="true" />
+            <argument android:name="workoutId" />
+        </fragment>
+        <fragment
+            android:id="@+id/createWorkoutFragment"
+            android:name="com.example.sportjournal.fragments.CreateWorkoutFragment"
+            android:label="CreateWorkoutFragment">
+            <action
+                android:id="@+id/action_createWorkoutFragment_to_createWorkout2Fragment"
+                app:destination="@id/createWorkout2Fragment"
+                app:popUpTo="@+id/workoutsFragment"
+                app:popUpToInclusive="false" />
+            <argument
+                android:name="routineId"
+                app:argType="string"
+                android:defaultValue="0" />
+            <argument
+                android:name="planId"
+                app:argType="string"
+                android:defaultValue="0" />
+        </fragment>
+        <fragment
+            android:id="@+id/workoutDetailsFragment"
+            android:name="com.example.sportjournal.fragments.WorkoutDetailsFragment"
+            android:label="WorkoutDetailsFragment">
+            <argument android:name="workoutId" />
+            <argument android:name="workoutName" />
+            <argument android:name="workoutDate" />
+            <argument android:name="workoutDifficulty" />
+            <action
+                android:id="@+id/action_workoutDetailsFragment_to_workoutsFragment"
+                app:destination="@id/workoutsFragment"
+                app:popUpTo="@+id/nav_graph_main"
+                app:popUpToInclusive="true" />
+        </fragment>
+    </navigation>
+</navigation>

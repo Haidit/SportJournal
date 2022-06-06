@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation2"
+        android:icon="@drawable/ic_baseline_fitness_center_24"
+        android:visible="true"
+        android:title="@string/Workouts"/>
+    <item
+        android:id="@+id/navigation"
+        android:icon="@drawable/plans"
+        android:visible="true"
+        android:title="@string/Plans"/>
+    <item
+        android:id="@+id/calendarFragment"
+        android:icon="@drawable/calendar"
+        android:visible="true"
+        android:title="@string/Calendar"/>
+    <item
+        android:id="@+id/statisticsFragment"
+        android:icon="@drawable/statistic"
+        android:visible="true"
+        android:title="@string/Statistics"/>
+</menu>
