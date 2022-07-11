@@ -75,5 +75,23 @@
     <string name="choose_plan">Choose a plan</string>
     <string name="choose_routine">Choose a routine</string>
     <string name="addWorkoutFromPlan">Add workout from the plan</string>
+    <string name="creatingExerciseAdvise">Если в списке ниже нет нужного Вам упражнения, Вы можете добавить его самостоятельно, нажав на кнопку +</string>
+    <string name="createExercise">Create new exercise</string>
+    <string name="exercises">Exercises</string>
+    <string name="addToWorkout">add to workout</string>
 
+    <string name="firstType">Жимы горизонтальные</string>
+    <string name="secondType">Жимы вертикальные</string>
+    <string name="thirdType">Тазо-доминантные</string>
+    <string name="fourthType">Колено-доминантные</string>
+    <string name="fifthType">Голеностопно-доминантные</string>
+    <string name="sixthType">Колено-доминантные + тазо-доминантные</string>
+    <string name="seventhType">Тяги горизонтальные</string>
+    <string name="eighthType">Тяги вертикальные</string>
+    <string name="ninthType">Мышцы кора</string>
+    <string name="unknown">Неизвестно</string>
+
+    <string name = "firstMuscleGroup">Грудные мышцы</string>
+    <string name = "secondMuscleGroup">Мышцы бедра</string>
+    <string name = "thirdMuscleGroup">Мышцы поясницы</string>
 </resources>

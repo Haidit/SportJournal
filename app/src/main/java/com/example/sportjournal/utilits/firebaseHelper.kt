@@ -36,6 +36,11 @@ const val ROUTINE_DAY = "routineDay"
 const val ROUTINE_PER_DAY_NUMBER = "routinePerDayNumber"
 const val ROUTINE_NAME = "routineName"
 
+const val NODE_EXERCISES = "exercises"
+const val EXERCISE_NAME = "exerciseName"
+const val EXERCISE_MUSCLE = "exerciseMuscle"
+const val EXERCISE_TYPE_ID =  "exerciseTypeId"
+
 fun initFirebase() {
     AUTH = FirebaseAuth.getInstance()
     DATABASE =

@@ -10,17 +10,17 @@
         android:id="@+id/text_input_layout1"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
         android:hint="@string/pickAnExercise"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/exercise_name_pick"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1" />
@@ -32,8 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
         android:hint="@string/exerciseRepeats"
         app:layout_constraintTop_toBottomOf="@id/text_input_layout1">
 
@@ -41,8 +41,7 @@
             android:id="@+id/exercise_repeats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            tools:text="10" />
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -50,8 +49,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
         android:hint="@string/exerciseWeight"
         app:layout_constraintTop_toBottomOf="@id/text_input_layout2">
@@ -68,8 +67,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
         android:hint="@string/restTime"
         app:layout_constraintTop_toBottomOf="@id/text_input_layout3">
@@ -87,8 +86,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
         android:hint="@string/seriesNumber"
         app:layout_constraintTop_toBottomOf="@id/text_input_layout4">
 
@@ -103,8 +102,8 @@
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
         android:text="@string/cancel"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"

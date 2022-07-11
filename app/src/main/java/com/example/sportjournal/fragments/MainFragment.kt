@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.sportjournal.R
-import com.example.sportjournal.utilits.initFirebase
-import com.example.sportjournal.utilits.initUser
+import com.example.sportjournal.models.Exercise
+import com.example.sportjournal.utilits.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -17,6 +17,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         initFirebase()
         initUser()
+
 
         val bottomNavigationView =
             view.findViewById<BottomNavigationView>(R.id.mainBottomNavigationView)

@@ -20,7 +20,10 @@
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/create_plan_dialog.xml" value="0.264" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/create_round_dialog.xml" value="0.23867753623188406" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/edit_round_dialog.xml" value="0.4" />
+        <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/exercise__pods.xml" value="0.19270833333333334" />
+        <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/exercise_pods.xml" value="0.264" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_calendar.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_choose_exercises.xml" value="0.264" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_create_plan.xml" value="0.152" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_create_routine.xml" value="0.264" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_create_workout.xml" value="0.264" />
@@ -30,7 +33,7 @@
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_difficulty_asker.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_difficulty_asker2.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_login.xml" value="0.4" />
-        <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_main.xml" value="0.72" />
+        <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_main.xml" value="0.264" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_plan_details.xml" value="0.152" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_plans.xml" value="0.2" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_registrtation_second.xml" value="0.2" />
@@ -39,6 +42,7 @@
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_test.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_workout_details.xml" value="0.264" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/fragment_workouts.xml" value="0.2597911227154047" />
+        <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/muscle_group_pods.xml" value="0.19270833333333334" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/plans_pods.xml" value="0.264" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/round_pods.xml" value="0.36988847583643125" />
         <entry key="..\:/Users/Home/AndroidStudioProjects/SportJournal/app/src/main/res/layout/routines_pods.xml" value="0.23369565217391305" />
