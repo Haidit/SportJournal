@@ -3,7 +3,7 @@
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/muscleGroupCard"
+    android:id="@+id/exerciseTypeCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/Theme.MaterialComponents.DayNight"
@@ -21,24 +21,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
-
             <TextView
-                android:id="@+id/muscleGroupName"
+                android:id="@+id/exerciseType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                tools:text="Средняя часть спины" />
+                tools:text="Горизонтальные жимы" />
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/innerRV"
+        <LinearLayout
+            android:id="@+id/innerLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/innerRV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
     </LinearLayout>
 
 

@@ -1,6 +1,7 @@
 package com.example.sportjournal.utilits
 
 import com.example.sportjournal.R
+import com.google.firebase.database.DataSnapshot
 
 val typesList = mutableMapOf(
     Pair(0, R.string.unknown),

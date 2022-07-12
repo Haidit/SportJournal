@@ -112,6 +112,9 @@
                 android:name="planId"
                 app:argType="string"
                 android:defaultValue="0" />
+            <action
+                android:id="@+id/action_createWorkoutFragment_to_chooseExercisesFragment"
+                app:destination="@id/chooseExercisesFragment" />
         </fragment>
         <fragment
             android:id="@+id/workoutDetailsFragment"
@@ -126,6 +129,14 @@
                 app:destination="@id/workoutsFragment"
                 app:popUpTo="@+id/nav_graph_main"
                 app:popUpToInclusive="true" />
+        </fragment>
+        <fragment
+            android:id="@+id/chooseExercisesFragment"
+            android:name="com.example.sportjournal.fragments.ChooseExercisesFragment"
+            android:label="ChooseExercisesFragment" >
+            <action
+                android:id="@+id/action_chooseExercisesFragment_to_createWorkoutFragment"
+                app:destination="@id/createWorkoutFragment" />
         </fragment>
     </navigation>
 </navigation>

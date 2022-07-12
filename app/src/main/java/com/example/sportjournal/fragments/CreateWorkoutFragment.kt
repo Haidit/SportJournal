@@ -65,8 +65,9 @@ class CreateWorkoutFragment : BaseFragment(R.layout.fragment_create_workout) {
         }
 
         view.findViewById<FloatingActionButton>(R.id.add_button).setOnClickListener {
-            showDialog(viewModel)
-            adapter.notifyDataSetChanged()
+            //showDialog(viewModel)
+            findNavController().navigate(R.id.action_createWorkoutFragment_to_chooseExercisesFragment)
+            //adapter.notifyDataSetChanged()
         }
 
         mToolbar = view.findViewById(R.id.toolbar)
