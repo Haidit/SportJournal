@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
+import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sportjournal.models.Exercise
@@ -15,11 +17,10 @@ import com.example.sportjournal.models.Routine
 
 class ExerciseTypeAdapter(
     private val exerciseTypes: ArrayList<Pair<String,ArrayList<Exercise>>>,
-    context: Context
+    private val context: Context
 ) :
     RecyclerView.Adapter<ExerciseTypeAdapter.ExerciseTypeHolder>() {
 
-    val innerContext = context
     inner class ExerciseTypeHolder(view: View) : RecyclerView.ViewHolder(view) {
         val exerciseTypeCard: CardView = view.findViewById(R.id.exerciseTypeCard)
         val exerciseTypeName: TextView = view.findViewById(R.id.exerciseType)
@@ -38,12 +39,13 @@ class ExerciseTypeAdapter(
         holder.exerciseTypeName.text = exerciseType.first
 
         val innerAdapter = ExerciseAdapter(exerciseType.second)
-        holder.innerRV.layoutManager = LinearLayoutManager(innerContext)
+        holder.innerRV.layoutManager = LinearLayoutManager(context)
         holder.innerRV.adapter = innerAdapter
 
         holder.exerciseTypeCard.setOnClickListener {
             holder.innerLayout.isVisible = !(holder.innerLayout.isVisible)
             notifyItemChanged(position)
+            Toast.makeText(context,holder.innerRV.size.toString(),Toast.LENGTH_SHORT).show()
         }
     }
 

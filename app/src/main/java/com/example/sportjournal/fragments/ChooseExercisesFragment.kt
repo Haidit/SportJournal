@@ -2,16 +2,19 @@ package com.example.sportjournal.fragments
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.sportjournal.*
-import com.example.sportjournal.databinding.ExerciseTypesPodsBinding
+import com.example.sportjournal.ChooseExercisesViewModel
+import com.example.sportjournal.ExerciseTypeAdapter
+import com.example.sportjournal.R
 import com.example.sportjournal.databinding.FragmentChooseExercisesBinding
 import com.example.sportjournal.models.Exercise
 import com.example.sportjournal.utilits.AppValueEventListener
 import com.example.sportjournal.utilits.NODE_EXERCISES
 import com.example.sportjournal.utilits.REF_DATABASE_ROOT
+import com.example.sportjournal.utilits.showToast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 
@@ -20,8 +23,6 @@ class ChooseExercisesFragment : Fragment(R.layout.fragment_choose_exercises) {
     private lateinit var exercisesPath: DatabaseReference
     private lateinit var binding: FragmentChooseExercisesBinding
     private lateinit var exerciseType: String
-    private var exercises = ArrayList<Exercise>()
-    private var exerciseGroups = ArrayList<Pair<String, ArrayList<Exercise>>>()
     private val viewModel: ChooseExercisesViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,9 +39,11 @@ class ChooseExercisesFragment : Fragment(R.layout.fragment_choose_exercises) {
                 typeIdToTypeConvert(ds2)
                 ds2.children.forEach {
                     val exercise = it.getValue(Exercise::class.java) ?: Exercise()
-                    exercises.add(exercise)
+                    viewModel.exercises.add(exercise)
                 }
-                    viewModel.exerciseGroups.add(Pair(exerciseType, exercises))
+                viewModel.exerciseGroups.add(Pair(exerciseType, viewModel.exercises))
+                showToast(viewModel.exercises.size.toString())
+                //viewModel.exercises.clear()
             }
             mainAdapter.notifyDataSetChanged()
         })
