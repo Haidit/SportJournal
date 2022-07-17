@@ -2,9 +2,10 @@ package com.example.sportjournal
 
 import androidx.lifecycle.ViewModel
 import com.example.sportjournal.models.Exercise
+import com.example.sportjournal.models.ExerciseType
 
 
 class ChooseExercisesViewModel : ViewModel() {
-    val exercises = ArrayList<Exercise>()
-    val exerciseGroups = ArrayList<Pair<String, ArrayList<Exercise>>>()
+    val exerciseGroups = ArrayList<ExerciseType>()
+    val activeExercises = ArrayList<Exercise>()
 }

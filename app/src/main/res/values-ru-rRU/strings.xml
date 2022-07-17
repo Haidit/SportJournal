@@ -91,5 +91,6 @@
     <string name = "firstMuscleGroup">Грудные мышцы</string>
     <string name = "secondMuscleGroup">Мышцы бедра</string>
     <string name = "thirdMuscleGroup">Мышцы поясницы</string>
+    <string name="added">(Добавлено)</string>
 
 </resources>

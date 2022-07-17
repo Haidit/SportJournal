@@ -115,6 +115,10 @@
             <action
                 android:id="@+id/action_createWorkoutFragment_to_chooseExercisesFragment"
                 app:destination="@id/chooseExercisesFragment" />
+            <argument android:name="exerciseList"
+                app:argType="com.example.sportjournal.models.Exercise[]"
+                app:nullable="true"
+                android:defaultValue="@null" />
         </fragment>
         <fragment
             android:id="@+id/workoutDetailsFragment"

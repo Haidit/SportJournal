@@ -10,7 +10,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sportjournal.*
-import com.example.sportjournal.databinding.EditRoundDialogBinding
 import com.example.sportjournal.models.Round
 import com.example.sportjournal.utilits.*
 import com.google.android.material.appbar.MaterialToolbar
@@ -62,7 +61,7 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
                 }
             })
 
-        val roundsRV = view.findViewById<RecyclerView>(R.id.rounds_list)
+        val roundsRV = view.findViewById<RecyclerView>(R.id.exercise_list)
         roundsRV.layoutManager = LinearLayoutManager(context)
         roundsRV.adapter = adapter
 

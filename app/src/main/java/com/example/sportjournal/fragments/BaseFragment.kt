@@ -31,18 +31,15 @@ open class BaseFragment(layout: Int) : Fragment(layout) {
             .setView(dialogBinding.root)
         val positiveButton = dialogBinding.saveButton
         val negativeButton = dialogBinding.deleteButton
-        val exerciseNameView = dialogBinding.exerciseNamePick
         val weightView = dialogBinding.exerciseWeightPicker
         val repeatsView = dialogBinding.exerciseRepeats
         val restView = dialogBinding.restTime
-        exerciseNameView.setText(round.exerciseName)
         weightView.setText(round.weight.toString())
         repeatsView.setText(round.reps.toString())
         restView.setText(round.restTime.toString())
         val dialog = dialogBuilder.create()
         dialog.show()
         positiveButton.setOnClickListener {
-            currentRound.child("exerciseName").setValue(exerciseNameView.text.toString())
             if (weightView.text.toString() == "") currentRound.child("weight").setValue(0)
             else currentRound.child("weight").setValue(weightView.text.toString().toInt())
             if (repeatsView.text.toString() == "") currentRound.child("reps").setValue(0)

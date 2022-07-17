@@ -31,7 +31,7 @@
                 tools:text="Горизонтальные жимы" />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/innerLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -41,7 +41,7 @@
                 android:id="@+id/innerRV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

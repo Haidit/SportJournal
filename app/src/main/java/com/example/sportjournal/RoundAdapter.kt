@@ -18,7 +18,6 @@ class RoundAdapter(
 
     inner class RoundHolder(view: View) : RecyclerView.ViewHolder(view) {
         val roundCard: CardView = view.findViewById(R.id.roundCard)
-        val exerciseName: TextView = view.findViewById(R.id.exercise_name)
         val reps: TextView = view.findViewById(R.id.exercise_repeats_number)
         val weight: TextView = view.findViewById(R.id.exercise_weight)
         val restTime: TextView = view.findViewById(R.id.exercise_rest_time)
@@ -32,7 +31,6 @@ class RoundAdapter(
 
     override fun onBindViewHolder(holder: RoundHolder, position: Int) {
         val round = rounds[position]
-        holder.exerciseName.text = round.exerciseName
         holder.reps.text = context.getString(R.string.reps, round.reps)
         holder.weight.text = context.getString(R.string.weight, round.weight)
         holder.restTime.text = context.getString(R.string.rest, round.restTime)

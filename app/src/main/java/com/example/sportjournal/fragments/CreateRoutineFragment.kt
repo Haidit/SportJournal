@@ -2,9 +2,7 @@ package com.example.sportjournal.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -14,7 +12,6 @@ import com.example.sportjournal.CreateRoutineViewModel
 import com.example.sportjournal.R
 import com.example.sportjournal.RoundAdapter
 import com.example.sportjournal.RoundOnClickListener
-import com.example.sportjournal.databinding.CreateRoundDialogBinding
 import com.example.sportjournal.models.Round
 import com.example.sportjournal.models.Routine
 import com.example.sportjournal.utilits.*
@@ -73,7 +70,7 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
                 showEditRoundDialog(Round, routineReference)
             }
         })
-        val roundsRV = view.findViewById<RecyclerView>(R.id.rounds_list)
+        val roundsRV = view.findViewById<RecyclerView>(R.id.exercise_list)
         roundsRV.layoutManager = LinearLayoutManager(context)
         roundsRV.adapter = adapter
 
@@ -90,7 +87,7 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
 
         mFAB = view.findViewById(R.id.add_button)
         mFAB.setOnClickListener {
-            showDialog(viewModel)
+            //showDialog(viewModel)
             adapter.notifyDataSetChanged()
         }
 
@@ -143,47 +140,47 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
         }
     }
 
-    private fun showDialog(viewModel: CreateRoutineViewModel) {
-        val dialogBinding = CreateRoundDialogBinding.inflate(layoutInflater)
-
-        val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setView(dialogBinding.root)
-        val positiveButton = dialogBinding.addButton
-        val negativeButton = dialogBinding.cancelButton
-        val dialog = dialogBuilder.create()
-        dialog.show()
-        positiveButton.setOnClickListener {
-            if (validateForm(dialogBinding.exerciseNamePick)) {
-                val exerciseName = dialogBinding.exerciseNamePick.text.toString()
-                val exerciseWeight = if (dialogBinding.exerciseWeightPicker.text.toString() == "") 0
-                else dialogBinding.exerciseWeightPicker.text.toString().toInt()
-                val exerciseRepeats = if (dialogBinding.exerciseRepeats.text.toString() == "") 0
-                else dialogBinding.exerciseRepeats.text.toString().toInt()
-                val exerciseRest = if (dialogBinding.restTime.text.toString() == "") 0
-                else dialogBinding.restTime.text.toString().toInt()
-                val roundsView = dialogBinding.roundsNumber
-                val rounds = if (dialogBinding.roundsNumber.text.toString() == "") {
-                    1
-                } else roundsView.text.toString().toInt()
-                repeat(rounds) {
-                    val round = Round(
-                        roundId = routineReference.push().key.toString(),
-                        exerciseName = exerciseName,
-                        weight = exerciseWeight,
-                        reps = exerciseRepeats,
-                        restTime = exerciseRest
-                    )
-                    viewModel.roundsPods.add(round)
-                }
-                for (i in 0 until viewModel.roundsPods.size) {
-                    routineReference.child(NODE_ROUNDS).child(viewModel.roundsPods[i].roundId)
-                        .setValue(viewModel.roundsPods[i])
-                }
-                dialog.dismiss()
-            }
-        }
-        negativeButton.setOnClickListener { dialog.dismiss() }
-    }
+//    private fun showDialog(viewModel: CreateRoutineViewModel) {
+//        val dialogBinding = CreateRoundDialogBinding.inflate(layoutInflater)
+//
+//        val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+//            .setView(dialogBinding.root)
+//        val positiveButton = dialogBinding.addButton
+//        val negativeButton = dialogBinding.cancelButton
+//        val dialog = dialogBuilder.create()
+//        dialog.show()
+//        positiveButton.setOnClickListener {
+//            if (validateForm(dialogBinding.exerciseNamePick)) {
+//                val exerciseName = dialogBinding.exerciseNamePick.text.toString()
+//                val exerciseWeight = if (dialogBinding.exerciseWeightPicker.text.toString() == "") 0
+//                else dialogBinding.exerciseWeightPicker.text.toString().toInt()
+//                val exerciseRepeats = if (dialogBinding.exerciseRepeats.text.toString() == "") 0
+//                else dialogBinding.exerciseRepeats.text.toString().toInt()
+//                val exerciseRest = if (dialogBinding.restTime.text.toString() == "") 0
+//                else dialogBinding.restTime.text.toString().toInt()
+//                val roundsView = dialogBinding.roundsNumber
+//                val rounds = if (dialogBinding.roundsNumber.text.toString() == "") {
+//                    1
+//                } else roundsView.text.toString().toInt()
+//                repeat(rounds) {
+//                    val round = Round(
+//                        exercise = Exercise(),
+//                        roundId = routineReference.push().key.toString(),
+//                        weight = exerciseWeight,
+//                        reps = exerciseRepeats,
+//                        restTime = exerciseRest
+//                    )
+//                    viewModel.roundsPods.add(round)
+//                }
+//                for (i in 0 until viewModel.roundsPods.size) {
+//                    routineReference.child(NODE_ROUNDS).child(viewModel.roundsPods[i].roundId)
+//                        .setValue(viewModel.roundsPods[i])
+//                }
+//                dialog.dismiss()
+//            }
+//        }
+//        negativeButton.setOnClickListener { dialog.dismiss() }
+//    }
 
     private fun createRoutine() {
         val routine = Routine(
