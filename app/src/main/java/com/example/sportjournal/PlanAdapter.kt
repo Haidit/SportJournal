@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sportjournal.models.Plan
-import com.example.sportjournal.models.Workout
 
 class PlanAdapter(
     private val plans: ArrayList<Plan>,

@@ -1,6 +1,5 @@
 package com.example.sportjournal
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sportjournal.models.Exercise
 
 class ExerciseAdapter(
-    val exercises: ArrayList<Exercise>,
+    private val exercises: ArrayList<Exercise>,
     private val context: Context
 ) :
     RecyclerView.Adapter<ExerciseAdapter.ExerciseHolder>() {
@@ -27,7 +26,6 @@ class ExerciseAdapter(
         return ExerciseHolder(itemView)
     }
 
-    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: ExerciseHolder, position: Int) {
         val exercise = exercises[position]
         val name =

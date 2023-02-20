@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sportjournal.*
 import com.example.sportjournal.databinding.ChoosePlanDialogBinding
 import com.example.sportjournal.databinding.ChooseRoutineDialogBinding
-import com.example.sportjournal.models.Exercise
 import com.example.sportjournal.models.Plan
 import com.example.sportjournal.models.Routine
 import com.example.sportjournal.models.Workout
@@ -45,7 +44,8 @@ class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
                         Workout.workoutId,
                         Workout.workoutName,
                         Workout.workoutDate,
-                        Workout.workoutDifficulty.toString()
+                        Workout.workoutDifficulty.toString(),
+                        Workout.weight.totalWeight.toFloat()
                     )
                 findNavController().navigate(action)
             }

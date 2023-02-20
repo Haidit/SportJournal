@@ -39,7 +39,9 @@ const val ROUTINE_NAME = "routineName"
 const val NODE_EXERCISES = "exercises"
 const val EXERCISE_NAME = "exerciseName"
 const val EXERCISE_MUSCLE = "exerciseMuscle"
-const val EXERCISE_TYPE_ID =  "exerciseTypeId"
+const val EXERCISE_TYPE_ID = "exerciseTypeId"
+const val EXERCISE_TYPE = "exerciseType"
+const val WEIGHT = "weight"
 
 fun initFirebase() {
     AUTH = FirebaseAuth.getInstance()

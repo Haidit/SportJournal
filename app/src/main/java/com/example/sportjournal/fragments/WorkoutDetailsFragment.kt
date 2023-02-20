@@ -4,20 +4,25 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.sportjournal.*
+import com.example.sportjournal.ExerciseSecondAdapter
+import com.example.sportjournal.R
+import com.example.sportjournal.WorkoutDetailsViewModel
+import com.example.sportjournal.databinding.FragmentWorkoutDetailsBinding
+import com.example.sportjournal.models.Exercise
 import com.example.sportjournal.models.Round
 import com.example.sportjournal.utilits.*
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.DatabaseReference
 
+
 class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
 
+    private lateinit var binding: FragmentWorkoutDetailsBinding
     private lateinit var mToolbar: MaterialToolbar
     private lateinit var mWorkoutId: String
     private lateinit var mWorkoutName: String
@@ -29,17 +34,21 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
     private lateinit var mWorkoutDesk: TextInputEditText
     private lateinit var workoutDescText: String
     private lateinit var workoutReference: DatabaseReference
+    private lateinit var exerciseAdapter: ExerciseSecondAdapter
+    private val viewModel: WorkoutDetailsViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding = FragmentWorkoutDetailsBinding.bind(requireView())
+
         val args: WorkoutDetailsFragmentArgs by navArgs()
-        val viewModel = ViewModelProvider(this).get(WorkoutDetailsViewModel::class.java)
 
         mWorkoutId = args.workoutId
         mWorkoutName = args.workoutName
         mWorkoutDate = args.workoutDate
         mWorkoutDifficulty = args.workoutDifficulty
+        val totalWeight = args.totalWeight
 
         mWorkoutNameView = view.findViewById(R.id.workout_name)
         mWorkoutDateView = view.findViewById(R.id.workout_date)
@@ -54,17 +63,6 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
         workoutReference =
             REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_WORKOUTS).child(mWorkoutId)
 
-        val adapter =
-            RoundAdapter(requireContext(), viewModel.roundsList, object : RoundOnClickListener {
-                override fun onClicked(Round: Round) {
-                    showEditRoundDialog(Round, workoutReference)
-                }
-            })
-
-        val roundsRV = view.findViewById<RecyclerView>(R.id.exercise_list)
-        roundsRV.layoutManager = LinearLayoutManager(context)
-        roundsRV.adapter = adapter
-
         workoutReference.child(
             WORKOUT_DESC
         ).addListenerForSingleValueEvent(AppValueEventListener {
@@ -73,16 +71,15 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
             mWorkoutDesk.setText(workoutDescText)
         })
 
-        workoutReference.addValueEventListener(AppValueEventListener { dataSnapshot ->
-            viewModel.roundsList.clear()
-            dataSnapshot.children.forEach { dataSnapshot2 ->
-                dataSnapshot2.children.forEach {
-                    val round = it.getValue(Round::class.java) ?: Round()
-                    viewModel.roundsList.add(round)
-                }
-            }
-            adapter.notifyDataSetChanged()
-        })
+        exerciseAdapter = ExerciseSecondAdapter(
+            viewModel.exerciseGroups,
+            requireContext(),
+            layoutInflater
+        )
+        val exerciseRV = binding.exerciseList
+        exerciseRV.layoutManager = LinearLayoutManager(context)
+        exerciseRV.adapter = exerciseAdapter
+        setExerciseRVData()
 
         mToolbar = view.findViewById(R.id.toolbar)
         mToolbar.apply {
@@ -110,8 +107,7 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
                         setMessage(resources.getString(R.string.alert_check))
 
                         setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                            workoutReference.child(WORKOUT_DESC)
-                                .setValue(mWorkoutDesk.text.toString())
+                            saveChanges()
                             findNavController().navigate(R.id.action_workoutDetailsFragment_to_workoutsFragment)
                         }
 
@@ -122,5 +118,27 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
                 }
             }
         }
+    }
+
+    private fun saveChanges() {
+        workoutReference.child(WORKOUT_DESC).setValue(mWorkoutDesk.text.toString())
+    }
+
+
+    private fun setExerciseRVData() {
+        viewModel.exerciseGroups.clear()
+        workoutReference.child(NODE_EXERCISES)
+            .addListenerForSingleValueEvent(AppValueEventListener { ds1 ->
+                ds1.children.forEach { ds2 ->
+                    val exercise = ds2.getValue(Exercise::class.java) ?: Exercise()
+                    val roundsList = ArrayList<Round>()
+                    ds2.child(NODE_ROUNDS).children.forEach {
+                        val round = it.getValue(Round::class.java) ?: Round()
+                        roundsList.add(round)
+                    }
+                    viewModel.exerciseGroups.add(Pair(exercise, roundsList))
+                    exerciseAdapter.notifyDataSetChanged()
+                }
+            })
     }
 }

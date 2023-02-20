@@ -6,10 +6,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.sportjournal.*
+import com.example.sportjournal.ExerciseSecondAdapter
+import com.example.sportjournal.R
+import com.example.sportjournal.WorkoutCreateViewModel
 import com.example.sportjournal.databinding.FragmentCreateWorkoutBinding
 import com.example.sportjournal.models.Round
+import com.example.sportjournal.models.Weight
 import com.example.sportjournal.models.Workout
 import com.example.sportjournal.utilits.*
 import com.google.android.material.appbar.MaterialToolbar
@@ -101,21 +103,22 @@ class CreateWorkoutFragment : BaseFragment(R.layout.fragment_create_workout) {
 
     private fun createWorkout() {
 
-        val dateMap = mutableMapOf<String, Any>()
+        val dataMap = mutableMapOf<String, Any>()
 
         val workout = Workout(
             "",
             "Без названия",
-            "Дата не указана"
+            resources.getString(R.string.date_unknown)
         )
+        workout.weight = Weight(totalWeight = 0)
 
-        dateMap[WORKOUT_ID] = currentWorkoutPath.key.toString()
-        dateMap[WORKOUT_NAME] = workout.workoutName
-        dateMap[WORKOUT_DATE] = workout.workoutDate
-        dateMap[WORKOUT_DIFFICULTY] = workout.workoutDifficulty
-        dateMap[WORKOUT_DESC] = workoutDesc.text.toString()
+        dataMap[WORKOUT_ID] = currentWorkoutPath.key.toString()
+        dataMap[WORKOUT_NAME] = workout.workoutName
+        dataMap[WORKOUT_DATE] = workout.workoutDate
+        dataMap[WORKOUT_DIFFICULTY] = workout.workoutDifficulty
+        dataMap[WORKOUT_DESC] = workoutDesc.text.toString()
 
-        currentWorkoutPath.updateChildren(dateMap)
+        currentWorkoutPath.updateChildren(dataMap)
             .addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     showToast(task.exception?.message.toString())
@@ -123,6 +126,31 @@ class CreateWorkoutFragment : BaseFragment(R.layout.fragment_create_workout) {
             }
         for (i in 0 until viewModel.exerciseGroups.size) {
             for (j in 0 until viewModel.exerciseGroups[i].second.size) {
+                val dataMap = mutableMapOf<String, Any>()
+                val exerciseGroup = viewModel.exerciseGroups[i].first
+                val round = viewModel.exerciseGroups[i].second[j]
+                when (exerciseGroup.exerciseTypeId) {
+                    1 -> workout.weight.Group1Weight += round.weight * round.reps
+                    2 -> workout.weight.Group2Weight += round.weight * round.reps
+                    3 -> workout.weight.Group3Weight += round.weight * round.reps
+                    4 -> workout.weight.Group4Weight += round.weight * round.reps
+                    5 -> workout.weight.Group5Weight += round.weight * round.reps
+                    6 -> workout.weight.Group6Weight += round.weight * round.reps
+                    7 -> workout.weight.Group7Weight += round.weight * round.reps
+                    8 -> workout.weight.Group8Weight += round.weight * round.reps
+                    9 -> workout.weight.Group9Weight += round.weight * round.reps
+                    0 -> workout.weight.Group0Weight += round.weight * round.reps
+                }
+                workout.weight.totalWeight += round.weight * round.reps
+
+                dataMap[EXERCISE_NAME] = exerciseGroup.exerciseName
+                dataMap[EXERCISE_MUSCLE] = exerciseGroup.exerciseMuscleId
+                dataMap[EXERCISE_TYPE_ID] = exerciseGroup.exerciseTypeId
+
+                currentWorkoutPath.child(NODE_EXERCISES)
+                    .child(viewModel.exerciseGroups[i].first.exerciseName).updateChildren(dataMap)
+
+                currentWorkoutPath.child(WEIGHT).setValue(workout.weight)
                 currentWorkoutPath.child(NODE_EXERCISES)
                     .child(viewModel.exerciseGroups[i].first.exerciseName).child(
                         NODE_ROUNDS

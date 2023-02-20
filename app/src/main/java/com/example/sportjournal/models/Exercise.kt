@@ -16,8 +16,7 @@ data class Exercise(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readByte() != 0.toByte()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(exerciseName)
@@ -42,7 +41,7 @@ data class Exercise(
     }
 }
 
-data class ExerciseType(
+data class ExerciseGroup(
     var exercisePair: Pair<String, ArrayList<Exercise>>,
     var expanded: Boolean = false
 )

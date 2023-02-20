@@ -58,6 +58,7 @@
     <string name="Plan">Plan</string>
     <string name="save_changes">Changes will be saved</string>
     <string name="cancel">Cancel</string>
+    <string name="canceled">Canceled</string>
     <string name="add_new_plan">Add new plan</string>
     <string name="plan_name">Plan name</string>
     <string name="newRoutine">New routine</string>
@@ -69,30 +70,46 @@
     <string name="plan_delete_alert">Plan will be deleted</string>
     <string name="reps">Reps: %1$d</string>
     <string name="weight">"Weight: %1$d kg"</string>
+    <string name="percent">"%1$d %%"</string>
     <string name="rest">Rest: %1$d sec</string>
     <string name="routineDay">"Day: %1$d"</string>
     <string name="routineNumber">"workout number: %1$d"</string>
     <string name="choose_plan">Choose a plan</string>
     <string name="choose_routine">Choose a routine</string>
     <string name="addWorkoutFromPlan">Add workout from the plan</string>
-    <string name="creatingExerciseAdvise">Если в списке ниже нет нужного Вам упражнения, Вы можете добавить его самостоятельно, нажав на кнопку +</string>
+    <string name="creatingExerciseAdvise">If you can\'t find exercise in the list, click "create new exercise" button.</string>
     <string name="createExercise">Create new exercise</string>
     <string name="exercises">Exercises</string>
     <string name="addToWorkout">add to workout</string>
 
-    <string name="firstType">Жимы горизонтальные</string>
-    <string name="secondType">Жимы вертикальные</string>
-    <string name="thirdType">Тазо-доминантные</string>
-    <string name="fourthType">Колено-доминантные</string>
-    <string name="fifthType">Голеностопно-доминантные</string>
-    <string name="sixthType">Колено-доминантные + тазо-доминантные</string>
-    <string name="seventhType">Тяги горизонтальные</string>
-    <string name="eighthType">Тяги вертикальные</string>
-    <string name="ninthType">Мышцы кора</string>
-    <string name="unknown">Неизвестно</string>
+    <string-array name="exercise_types_array">
+        <item>Unknown</item>
+        <item>Horizontal push</item>
+        <item>Vertical push</item>
+        <item>Hip dominant</item>
+        <item>Knee dominant</item>
+        <item>Ankle dominant</item>
+        <item>Hip dominant + Knee dominant</item>
+        <item>Horizontal pulls</item>
+        <item>Vertical pulls</item>
+        <item>Core muscles</item>
+    </string-array>
 
+    <string name="unknown">Unknown</string>
     <string name = "firstMuscleGroup">Грудные мышцы</string>
     <string name = "secondMuscleGroup">Мышцы бедра</string>
     <string name = "thirdMuscleGroup">Мышцы поясницы</string>
+
     <string name="added">(Added)</string>
+    <string name="allTime">All time</string>
+    <string name="choosePeriod">Choose period</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="totalWeight">Total weight: %1$d kg</string>
+    <string name="date_unknown">Date not given</string>
+    <string name="refresh">Refresh</string>
+    <string name="createNewExercise">Create new exercise</string>
+    <string name="exerciseName">Exercise name</string>
+    <string name="exercise_type">Exercise type</string>
+
 </resources>

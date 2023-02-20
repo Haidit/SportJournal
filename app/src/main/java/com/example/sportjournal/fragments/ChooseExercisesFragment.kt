@@ -2,83 +2,130 @@ package com.example.sportjournal.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.sportjournal.*
+import com.example.sportjournal.ChooseExercisesViewModel
+import com.example.sportjournal.ExerciseTypeAdapter
+import com.example.sportjournal.R
+import com.example.sportjournal.databinding.CreateNewExerciseDialogBinding
 import com.example.sportjournal.databinding.FragmentChooseExercisesBinding
 import com.example.sportjournal.models.Exercise
-import com.example.sportjournal.models.ExerciseType
-import com.example.sportjournal.utilits.AppValueEventListener
-import com.example.sportjournal.utilits.NODE_EXERCISES
-import com.example.sportjournal.utilits.REF_DATABASE_ROOT
-import com.example.sportjournal.utilits.showToast
-import com.google.firebase.database.DataSnapshot
+import com.example.sportjournal.models.ExerciseGroup
+import com.example.sportjournal.utilits.*
 import com.google.firebase.database.DatabaseReference
 
 class ChooseExercisesFragment : Fragment(R.layout.fragment_choose_exercises) {
 
-    private lateinit var exercisesPath: DatabaseReference
     private lateinit var binding: FragmentChooseExercisesBinding
-    private lateinit var exerciseTypeGroup: String
     private val viewModel: ChooseExercisesViewModel by activityViewModels()
+    private lateinit var exercisesPath: DatabaseReference
+    private val userExercisesPath =
+        REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_EXERCISES)
+    private lateinit var exerciseType: String
+    private lateinit var exType: Array<String>
+    private lateinit var mainAdapter: ExerciseTypeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentChooseExercisesBinding.bind(requireView())
 
-        val mainAdapter = ExerciseTypeAdapter(viewModel.exerciseGroups, requireContext())
-        //val mainAdapter = ExerciseAdapter(viewModel.exercises, requireContext())
+        exType = resources.getStringArray(R.array.exercise_types_array)
+        mainAdapter = ExerciseTypeAdapter(viewModel.exerciseGroups, requireContext())
         binding.mainRV.layoutManager = LinearLayoutManager(context)
         binding.mainRV.adapter = mainAdapter
 
         exercisesPath = REF_DATABASE_ROOT.child(NODE_EXERCISES)
+        uploadData()
+
+        binding.addButton.setOnClickListener {
+            mainAdapter.exerciseGroups.forEach { exType ->
+                exType.exercisePair.second.forEach { ex ->
+                    if (ex.active) {
+                        viewModel.activeExercises.add(ex)
+                    }
+                }
+            }
+            var i = 0
+            val actEx =
+                Array(viewModel.activeExercises.size) { viewModel.activeExercises[i++] }
+            val action =
+                ChooseExercisesFragmentDirections.actionChooseExercisesFragmentToCreateWorkoutFragment(
+                    exerciseList = actEx
+                )
+            viewModel.activeExercises.clear()
+            findNavController().navigate(action)
+        }
+
+        binding.createNewButton.setOnClickListener { showCreateNewExerciseDialog() }
+
+    }
+
+    private fun uploadData() {
         exercisesPath.addListenerForSingleValueEvent(AppValueEventListener { ds1 ->
             viewModel.exerciseGroups.clear()
             ds1.children.forEach { ds2 ->
-                typeIdToTypeConvert(ds2)
+                exerciseType = typeIdToTypeConvert(ds2.key.toString().toInt())
                 val exercises = ArrayList<Exercise>()
                 ds2.children.forEach {
                     val exercise = it.getValue(Exercise::class.java) ?: Exercise()
                     exercises.add(exercise)
                 }
-                val exerciseType = ExerciseType(Pair(exerciseTypeGroup, exercises))
-                viewModel.exerciseGroups.add(exerciseType)
+                val exerciseGroup = ExerciseGroup(Pair(exerciseType, exercises))
+                viewModel.exerciseGroups.add(exerciseGroup)
             }
             mainAdapter.notifyDataSetChanged()
         })
-
-        binding.addButton.setOnClickListener {
-            mainAdapter.exerciseTypes.forEach { exType ->
-                exType.exercisePair.second.forEach { ex ->
-                    if (ex.active) {
-                        viewModel.activeExercises.add(ex)}
+        userExercisesPath.addListenerForSingleValueEvent(AppValueEventListener { ds1 ->
+            ds1.children.forEach { ds2 ->
+                val exercise = ds2.getValue(Exercise::class.java) ?: Exercise()
+                viewModel.exerciseGroups.forEach {
+                    if (it.exercisePair.first == typeIdToTypeConvert(
+                            ds2.child(EXERCISE_TYPE_ID).value.toString().toInt()
+                        )
+                    )
+                        it.exercisePair.second.add(exercise)
                 }
             }
-            var i = 0
-            val actEx: Array<Exercise> = Array(viewModel.activeExercises.size) { viewModel.activeExercises[i++] }
-            val action =
-                ChooseExercisesFragmentDirections.actionChooseExercisesFragmentToCreateWorkoutFragment(
-                    exerciseList = actEx
-                )
-            findNavController().navigate(action)
+            mainAdapter.notifyDataSetChanged()
+        })
+    }
+
+    private fun typeIdToTypeConvert(key: Int) = exType[key]
+
+    private fun showCreateNewExerciseDialog() {
+        val dialogBinding = CreateNewExerciseDialogBinding.inflate(layoutInflater)
+        val dialogBuilder = AlertDialog.Builder(requireContext()).setView(dialogBinding.root)
+        val spinner1 = dialogBinding.ExerciseTypeSpinner
+        val exerciseName = dialogBinding.exerciseName
+        val doneButton = dialogBinding.doneButton
+        ArrayAdapter.createFromResource(
+            requireContext(), R.array.exercise_types_array, android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner1.adapter = adapter
+        }
+        val dialog = dialogBuilder.create()
+        dialog.show()
+        doneButton.setOnClickListener {
+            if (validateForm(exerciseName)) {
+                createNewExercise(exerciseName.text.toString(), spinner1.selectedItemPosition)
+                uploadData()
+                dialog.dismiss()
+            }
         }
     }
 
-    private fun typeIdToTypeConvert(ds: DataSnapshot) {
-        exerciseTypeGroup = when (ds.key.toString().toInt()) {
-            0 -> getString(R.string.unknown)
-            1 -> getString(R.string.firstType)
-            2 -> getString(R.string.secondType)
-            3 -> getString(R.string.thirdType)
-            4 -> getString(R.string.fourthType)
-            5 -> getString(R.string.fifthType)
-            6 -> getString(R.string.sixthType)
-            7 -> getString(R.string.seventhType)
-            8 -> getString(R.string.eighthType)
-            9 -> getString(R.string.ninthType)
-            else -> getString(R.string.unknown)
-        }
+    private fun createNewExercise(exerciseName: String, exerciseType: Int) {
+        val dataMap = mutableMapOf<String, Any>()
+        dataMap[EXERCISE_MUSCLE] = 0 // Change later
+        dataMap[EXERCISE_TYPE_ID] = exerciseType
+        dataMap[EXERCISE_TYPE] = typeIdToTypeConvert(exerciseType)
+        dataMap[EXERCISE_NAME] = exerciseName
+        userExercisesPath.child(exerciseName).updateChildren(dataMap)
     }
+
 }

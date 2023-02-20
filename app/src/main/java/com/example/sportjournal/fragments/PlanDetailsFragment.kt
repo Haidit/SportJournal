@@ -9,8 +9,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sportjournal.*
-import com.example.sportjournal.models.Round
+import com.example.sportjournal.PlanDetailsViewModel
+import com.example.sportjournal.R
+import com.example.sportjournal.RoutineAdapter
+import com.example.sportjournal.RoutineOnClickListener
 import com.example.sportjournal.models.Routine
 import com.example.sportjournal.utilits.*
 import com.google.android.material.appbar.MaterialToolbar

@@ -2,10 +2,10 @@ package com.example.sportjournal.fragments
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -15,7 +15,6 @@ import com.example.sportjournal.utilits.*
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.DatabaseReference
 import java.util.*
-import android.widget.SeekBar
 
 
 class CreateWorkout2Fragment : Fragment(R.layout.fragment_create_workout2) {
@@ -61,7 +60,9 @@ class CreateWorkout2Fragment : Fragment(R.layout.fragment_create_workout2) {
         view.findViewById<ImageButton>(R.id.date_btn).setOnClickListener {
             val dpd = DatePickerDialog(this.requireContext(), { _, mYear, mMonth, mDay ->
                 val mmMonth = mMonth + 1
-                workoutDate.setText("$mDay.$mmMonth.$mYear")
+                val mmmMonth = if (mmMonth >= 10) mmMonth.toString() else "0$mmMonth"
+                val mmDay = if (mDay >= 10) mDay.toString() else "0$mDay"
+                workoutDate.setText("$mmDay.$mmmMonth.$mYear")
             }, year, month, day)
             dpd.show()
         }

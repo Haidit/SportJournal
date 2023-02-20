@@ -4,21 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.core.view.isVisible
-import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sportjournal.models.Exercise
-import com.example.sportjournal.models.ExerciseType
-import com.example.sportjournal.models.Routine
+import com.example.sportjournal.models.ExerciseGroup
 
 class ExerciseTypeAdapter(
-    val exerciseTypes: ArrayList<ExerciseType>,
+    val exerciseGroups: ArrayList<ExerciseGroup>,
     private val context: Context
 ) :
     RecyclerView.Adapter<ExerciseTypeAdapter.ExerciseTypeHolder>() {
@@ -37,7 +31,7 @@ class ExerciseTypeAdapter(
     }
 
     override fun onBindViewHolder(holder: ExerciseTypeHolder, position: Int) {
-        val exerciseType = exerciseTypes[position]
+        val exerciseType = exerciseGroups[position]
         holder.exerciseTypeName.text = exerciseType.exercisePair.first
 
         val innerAdapter = ExerciseAdapter(exerciseType.exercisePair.second, context)
@@ -54,6 +48,6 @@ class ExerciseTypeAdapter(
     }
 
     override fun getItemCount(): Int {
-        return exerciseTypes.size
+        return exerciseGroups.size
     }
 }

@@ -66,6 +66,7 @@
     <string name="reps">Повторений: %1$d</string>
     <string name="weight">"Вес: %1$d кг"</string>
     <string name="rest">Отдых: %1$d сек</string>
+    <string name="percent">"%1$d %%"</string>
     <string name="routineDay">"День плана: %1$d"</string>
     <string name="routineNumber">"Номер тренировки: %1$d"</string>
     <string name="choose_plan">Выберите план</string>
@@ -76,21 +77,22 @@
     <string name="exercises">Exercises</string>
     <string name="addToWorkout">add to workout</string>
 
-
-    <string name="firstType">Жимы горизонтальные</string>
-    <string name="secondType">Жимы вертикальные</string>
-    <string name="thirdType">Тазо-доминантные</string>
-    <string name="fourthType">Колено-доминантные</string>
-    <string name="fifthType">Голеностопно-доминантные</string>
-    <string name="sixthType">Колено-доминантные + тазо-доминантные</string>
-    <string name="seventhType">Тяги горизонтальные</string>
-    <string name="eighthType">Тяги вертикальные</string>
-    <string name="ninthType">Мышцы кора</string>
     <string name="unknown">Неизвестно</string>
 
     <string name = "firstMuscleGroup">Грудные мышцы</string>
     <string name = "secondMuscleGroup">Мышцы бедра</string>
     <string name = "thirdMuscleGroup">Мышцы поясницы</string>
     <string name="added">(Добавлено)</string>
+    <string name="allTime">За всё время</string>
+    <string name="choosePeriod">Выбрать период</string>
+    <string name="from">С</string>
+    <string name="to">По</string>
+    <string name="totalWeight">Общий тоннаж: %1$d кг</string>
+    <string name="date_unknown">Дата не указана</string>
+    <string name="refresh">Обновить</string>
+    <string name="createNewExercise">Create new exercise</string>
+    <string name="exerciseName">Exercise name</string>
+    <string name="exercise_type">Exercise type</string>
+    <string name="canceled">Отменено</string>
 
 </resources>
