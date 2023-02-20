@@ -2,19 +2,16 @@ package com.example.sportjournal.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sportjournal.CreateRoutineViewModel
-import com.example.sportjournal.R
-import com.example.sportjournal.RoundAdapter
-import com.example.sportjournal.RoundOnClickListener
+import com.example.sportjournal.*
 import com.example.sportjournal.databinding.CreateRoundDialogBinding
+import com.example.sportjournal.databinding.FragmentCreateRoutineBinding
+import com.example.sportjournal.models.Exercise
 import com.example.sportjournal.models.Round
 import com.example.sportjournal.models.Routine
 import com.example.sportjournal.utilits.*
@@ -25,55 +22,58 @@ import com.google.firebase.database.DatabaseReference
 
 class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
 
-    private lateinit var mToolbar: MaterialToolbar
-    private lateinit var mRoutineNameView: TextInputEditText
-    private lateinit var mRoutineDayView: TextInputEditText
-    private lateinit var mPlanId: String
-    private lateinit var mPlanName: String
-    private lateinit var mRoutineId: String
+    private lateinit var binding: FragmentCreateRoutineBinding
+    private val viewModel: CreateRoutineViewModel by activityViewModels()
+    private lateinit var toolbar: MaterialToolbar
+    private lateinit var routineNameView: TextInputEditText
+    private lateinit var routineDayView: TextInputEditText
+    private lateinit var planId: String
+    private lateinit var planName: String
+    private lateinit var routineId: String
     private lateinit var planPath: DatabaseReference
     private lateinit var routineReference: DatabaseReference
-    private lateinit var mWorkoutPerDayNumberView: TextInputEditText
-    private lateinit var mFAB: FloatingActionButton
+    private lateinit var workoutPerDayNumberView: TextInputEditText
+    private lateinit var fab: FloatingActionButton
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val args: CreateRoutineFragmentArgs by navArgs()
-        mPlanId = args.planId
-        mPlanName = args.planName
-        mRoutineId = args.routineId
+        planId = args.planId
+        planName = args.planName
+        routineId = args.routineId
 
-        val viewModel = ViewModelProvider(this).get(CreateRoutineViewModel::class.java)
+        binding = FragmentCreateRoutineBinding.bind(requireView())
 
-        planPath = REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_PLANS).child(mPlanId)
-        routineReference = planPath.child(NODE_ROUTINES).child(mRoutineId)
+        planPath = REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_PLANS).child(planId)
+        routineReference = planPath.child(NODE_ROUTINES).child(routineId)
 
-        mRoutineNameView = view.findViewById(R.id.newRoutineName)
-        mRoutineDayView = view.findViewById(R.id.routineDay)
-        mWorkoutPerDayNumberView = view.findViewById(R.id.workoutPerDay)
-        mToolbar = view.findViewById(R.id.toolbar)
+        routineNameView = binding.newRoutineName
+        routineDayView = binding.routineDay
+        workoutPerDayNumberView = binding.workoutPerDay
+        toolbar = binding.toolbar
 
         routineReference.child(ROUTINE_NAME).addListenerForSingleValueEvent(AppValueEventListener {
             val routineName =
                 if (it.value.toString() != "") it.value.toString() else getString(R.string.newRoutine)
-            mRoutineNameView.setText(routineName)
-            mToolbar.title = routineName
+            routineNameView.setText(routineName)
+            toolbar.title = routineName
         })
         routineReference.child(ROUTINE_DAY).addListenerForSingleValueEvent(AppValueEventListener {
-            mRoutineDayView.setText(it.value.toString())
+            routineDayView.setText(it.value.toString())
         })
         routineReference.child(ROUTINE_PER_DAY_NUMBER)
             .addListenerForSingleValueEvent(AppValueEventListener {
-                mWorkoutPerDayNumberView.setText(it.value.toString())
+                workoutPerDayNumberView.setText(it.value.toString())
             })
 
-        val adapter = RoundAdapter(requireContext(), viewModel.roundsPods, object : RoundOnClickListener {
-            override fun onClicked(Round: Round) {
-                showEditRoundDialog(Round, routineReference)
-            }
-        })
-        val roundsRV = view.findViewById<RecyclerView>(R.id.rounds_list)
+        val adapter =
+            RoundAdapter(requireContext(), viewModel.roundsPods, object : RoundOnClickListener {
+                override fun onClicked(Round: Round) {
+                    showEditRoundDialog(Round, routineReference)
+                }
+            })
+        val roundsRV = binding.exerciseList
         roundsRV.layoutManager = LinearLayoutManager(context)
         roundsRV.adapter = adapter
 
@@ -88,13 +88,12 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
             adapter.notifyDataSetChanged()
         })
 
-        mFAB = view.findViewById(R.id.add_button)
-        mFAB.setOnClickListener {
-            showDialog(viewModel)
+        fab = binding.addButton
+        fab.setOnClickListener {
             adapter.notifyDataSetChanged()
         }
 
-        mToolbar.apply {
+        toolbar.apply {
             inflateMenu(R.menu.details_menu_bar)
             menu.apply {
                 findItem(R.id.save_changes).setOnMenuItemClickListener {
@@ -102,14 +101,14 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
                         setTitle(resources.getString(R.string.save_changes))
                         setMessage(resources.getString(R.string.alert_check))
                         setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                            if (validateForm(mRoutineNameView) && validateForm(mRoutineDayView) &&
-                                validateForm(mWorkoutPerDayNumberView)
+                            if (validateForm(routineNameView) && validateForm(routineDayView) &&
+                                validateForm(workoutPerDayNumberView)
                             ) {
                                 createRoutine()
                                 val action =
                                     CreateRoutineFragmentDirections.actionCreateRoutineFragmentToPlanDetailsFragment(
-                                        mPlanName,
-                                        mPlanId
+                                        planName,
+                                        planId
                                     )
                                 findNavController().navigate(action)
                             }
@@ -127,8 +126,8 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
                         setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                             val action =
                                 CreateRoutineFragmentDirections.actionCreateRoutineFragmentToPlanDetailsFragment(
-                                    mPlanName,
-                                    mPlanId
+                                    planName,
+                                    planId
                                 )
                             findNavController().navigate(action)
                             routineReference.removeValue()
@@ -143,54 +142,12 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
         }
     }
 
-    private fun showDialog(viewModel: CreateRoutineViewModel) {
-        val dialogBinding = CreateRoundDialogBinding.inflate(layoutInflater)
-
-        val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setView(dialogBinding.root)
-        val positiveButton = dialogBinding.addButton
-        val negativeButton = dialogBinding.cancelButton
-        val dialog = dialogBuilder.create()
-        dialog.show()
-        positiveButton.setOnClickListener {
-            if (validateForm(dialogBinding.exerciseNamePick)) {
-                val exerciseName = dialogBinding.exerciseNamePick.text.toString()
-                val exerciseWeight = if (dialogBinding.exerciseWeightPicker.text.toString() == "") 0
-                else dialogBinding.exerciseWeightPicker.text.toString().toInt()
-                val exerciseRepeats = if (dialogBinding.exerciseRepeats.text.toString() == "") 0
-                else dialogBinding.exerciseRepeats.text.toString().toInt()
-                val exerciseRest = if (dialogBinding.restTime.text.toString() == "") 0
-                else dialogBinding.restTime.text.toString().toInt()
-                val roundsView = dialogBinding.roundsNumber
-                val rounds = if (dialogBinding.roundsNumber.text.toString() == "") {
-                    1
-                } else roundsView.text.toString().toInt()
-                repeat(rounds) {
-                    val round = Round(
-                        roundId = routineReference.push().key.toString(),
-                        exerciseName = exerciseName,
-                        weight = exerciseWeight,
-                        reps = exerciseRepeats,
-                        restTime = exerciseRest
-                    )
-                    viewModel.roundsPods.add(round)
-                }
-                for (i in 0 until viewModel.roundsPods.size) {
-                    routineReference.child(NODE_ROUNDS).child(viewModel.roundsPods[i].roundId)
-                        .setValue(viewModel.roundsPods[i])
-                }
-                dialog.dismiss()
-            }
-        }
-        negativeButton.setOnClickListener { dialog.dismiss() }
-    }
-
     private fun createRoutine() {
         val routine = Routine(
-            mRoutineNameView.text.toString(),
-            mRoutineId,
-            mWorkoutPerDayNumberView.text.toString().toInt(),
-            mRoutineDayView.text.toString().toInt()
+            routineNameView.text.toString(),
+            routineId,
+            workoutPerDayNumberView.text.toString().toInt(),
+            routineDayView.text.toString().toInt()
         )
         val dateMap = mutableMapOf<String, Any>()
         dateMap[ROUTINE_DAY] = routine.routineDay

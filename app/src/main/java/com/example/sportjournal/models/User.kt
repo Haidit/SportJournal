@@ -1,7 +1,6 @@
 package com.example.sportjournal.models
 
 import com.google.firebase.database.IgnoreExtraProperties
-import java.util.*
 
 @IgnoreExtraProperties
 data class User(

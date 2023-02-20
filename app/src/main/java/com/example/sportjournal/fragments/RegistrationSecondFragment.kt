@@ -2,7 +2,6 @@ package com.example.sportjournal.fragments
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton

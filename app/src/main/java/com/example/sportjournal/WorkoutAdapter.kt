@@ -29,7 +29,7 @@ class WorkoutAdapter(
     override fun onBindViewHolder(holder: WorkoutHolder, position: Int) {
         val workout = workouts[position]
         holder.workoutName.text = workout.workoutName
-        holder.workoutDate.text = workout.workoutDate
+        holder.workoutDate.text = workout.workoutDate.toString()
         holder.workoutCard.setOnClickListener {
             onClickListener.onClicked(workout)
         }

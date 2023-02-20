@@ -44,7 +44,8 @@ class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
                         Workout.workoutId,
                         Workout.workoutName,
                         Workout.workoutDate,
-                        Workout.workoutDifficulty.toString()
+                        Workout.workoutDifficulty.toString(),
+                        Workout.weight.totalWeight.toFloat()
                     )
                 findNavController().navigate(action)
             }

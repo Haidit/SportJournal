@@ -30,7 +30,7 @@
             android:id="@+id/workout_desc_input"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="top"/>
+            android:gravity="top" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -68,10 +68,10 @@
         app:layout_constraintTop_toBottomOf="@id/workout_date" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rounds_list"
+        android:id="@+id/exercise_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

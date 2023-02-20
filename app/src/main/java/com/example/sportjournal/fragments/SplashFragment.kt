@@ -3,7 +3,6 @@ package com.example.sportjournal.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.example.sportjournal.MainActivity
 import com.example.sportjournal.R
 import com.example.sportjournal.utilits.AUTH
 import com.example.sportjournal.utilits.baseNavigate

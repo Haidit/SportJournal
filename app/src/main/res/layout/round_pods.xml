@@ -14,48 +14,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/exercise_name"
-            android:layout_width="match_parent"
+            android:id="@+id/exercise_repeats_number"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:gravity="center"
             android:textSize="16sp"
-            tools:text="Упражнение" />
+            tools:text="Повторений: 10 раз" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/exercise_weight"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_margin="4dp"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            tools:text="Вес: 50 кг" />
 
-            <TextView
-                android:id="@+id/exercise_repeats_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:textSize="16sp"
-                tools:text="Повторений: 10 раз" />
-
-            <TextView
-                android:id="@+id/exercise_weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                tools:text="Вес: 50 кг" />
-
-            <TextView
-                android:id="@+id/exercise_rest_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                tools:text="Отдых: 30 сек" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/exercise_rest_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            tools:text="Отдых: 30 сек" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

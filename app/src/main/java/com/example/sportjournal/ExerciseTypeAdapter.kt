@@ -4,26 +4,23 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sportjournal.models.Exercise
-import com.example.sportjournal.models.Routine
+import com.example.sportjournal.models.ExerciseGroup
 
 class ExerciseTypeAdapter(
-    private val exerciseTypes: ArrayList<Pair<String,ArrayList<Exercise>>>,
-    context: Context
+    val exerciseGroups: ArrayList<ExerciseGroup>,
+    private val context: Context
 ) :
     RecyclerView.Adapter<ExerciseTypeAdapter.ExerciseTypeHolder>() {
 
-    val innerContext = context
     inner class ExerciseTypeHolder(view: View) : RecyclerView.ViewHolder(view) {
         val exerciseTypeCard: CardView = view.findViewById(R.id.exerciseTypeCard)
         val exerciseTypeName: TextView = view.findViewById(R.id.exerciseType)
-        val innerLayout: LinearLayout = view.findViewById(R.id.innerLayout)
+        val innerLayout: RelativeLayout = view.findViewById(R.id.innerLayout)
         val innerRV: RecyclerView = view.findViewById(R.id.innerRV)
     }
 
@@ -34,20 +31,23 @@ class ExerciseTypeAdapter(
     }
 
     override fun onBindViewHolder(holder: ExerciseTypeHolder, position: Int) {
-        val exerciseType = exerciseTypes[position]
-        holder.exerciseTypeName.text = exerciseType.first
+        val exerciseType = exerciseGroups[position]
+        holder.exerciseTypeName.text = exerciseType.exercisePair.first
 
-        val innerAdapter = ExerciseAdapter(exerciseType.second)
-        holder.innerRV.layoutManager = LinearLayoutManager(innerContext)
+        val innerAdapter = ExerciseAdapter(exerciseType.exercisePair.second, context)
+        holder.innerRV.layoutManager = LinearLayoutManager(context)
         holder.innerRV.adapter = innerAdapter
 
+        val isExpanded: Boolean = exerciseType.expanded
+        holder.innerLayout.visibility = if (isExpanded) View.VISIBLE else View.GONE
+
         holder.exerciseTypeCard.setOnClickListener {
-            holder.innerLayout.isVisible = !(holder.innerLayout.isVisible)
+            exerciseType.expanded = !exerciseType.expanded
             notifyItemChanged(position)
         }
     }
 
     override fun getItemCount(): Int {
-        return exerciseTypes.size
+        return exerciseGroups.size
     }
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_main"
-    app:startDestination="@id/navigation2">
+    app:startDestination="@id/workoutsFragment">
 
     <fragment
         android:id="@+id/calendarFragment"
@@ -40,7 +40,7 @@
                 android:id="@+id/action_planDetailsFragment_to_plansFragment"
                 app:destination="@id/plansFragment"
                 app:popUpTo="@id/navigation"
-                app:popUpToInclusive="true"/>
+                app:popUpToInclusive="true" />
         </fragment>
         <dialog
             android:id="@+id/createPlanDialogFragment"
@@ -67,76 +67,84 @@
             <argument android:name="routineId" />
         </fragment>
     </navigation>
-    <navigation
-        android:id="@+id/navigation2"
-        app:startDestination="@id/workoutsFragment">
-        <fragment
-            android:id="@+id/workoutsFragment"
-            android:name="com.example.sportjournal.fragments.WorkoutsFragment"
-            android:label="WorkoutsFragment">
-            <action
-                android:id="@+id/action_workoutsFragment_to_createWorkoutFragment"
-                app:destination="@id/createWorkoutFragment" />
-            <action
-                android:id="@+id/action_workoutsFragment_to_workoutDetailsFragment"
-                app:destination="@id/workoutDetailsFragment" />
-            <action
-                android:id="@+id/action_workoutsFragment_to_createWorkoutFragment2"
-                app:destination="@id/createWorkoutFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/createWorkout2Fragment"
-            android:name="com.example.sportjournal.fragments.CreateWorkout2Fragment"
-            android:label="CreateWorkout2Fragment">
-            <action
-                android:id="@+id/action_createWorkout2Fragment_to_workoutsFragment"
-                app:destination="@id/workoutsFragment"
-                app:popUpTo="@+id/nav_graph_main"
-                app:popUpToInclusive="true" />
-            <argument android:name="workoutId" />
-        </fragment>
-        <fragment
-            android:id="@+id/createWorkoutFragment"
-            android:name="com.example.sportjournal.fragments.CreateWorkoutFragment"
-            android:label="CreateWorkoutFragment">
-            <action
-                android:id="@+id/action_createWorkoutFragment_to_createWorkout2Fragment"
-                app:destination="@id/createWorkout2Fragment"
-                app:popUpTo="@+id/workoutsFragment"
-                app:popUpToInclusive="false" />
-            <argument
-                android:name="routineId"
-                app:argType="string"
-                android:defaultValue="0" />
-            <argument
-                android:name="planId"
-                app:argType="string"
-                android:defaultValue="0" />
-            <action
-                android:id="@+id/action_createWorkoutFragment_to_chooseExercisesFragment"
-                app:destination="@id/chooseExercisesFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/workoutDetailsFragment"
-            android:name="com.example.sportjournal.fragments.WorkoutDetailsFragment"
-            android:label="WorkoutDetailsFragment">
-            <argument android:name="workoutId" />
-            <argument android:name="workoutName" />
-            <argument android:name="workoutDate" />
-            <argument android:name="workoutDifficulty" />
-            <action
-                android:id="@+id/action_workoutDetailsFragment_to_workoutsFragment"
-                app:destination="@id/workoutsFragment"
-                app:popUpTo="@+id/nav_graph_main"
-                app:popUpToInclusive="true" />
-        </fragment>
-        <fragment
-            android:id="@+id/chooseExercisesFragment"
-            android:name="com.example.sportjournal.fragments.ChooseExercisesFragment"
-            android:label="ChooseExercisesFragment" >
-            <action
-                android:id="@+id/action_chooseExercisesFragment_to_createWorkoutFragment"
-                app:destination="@id/createWorkoutFragment" />
-        </fragment>
-    </navigation>
+
+    <fragment
+        android:id="@+id/workoutsFragment"
+        android:name="com.example.sportjournal.fragments.WorkoutsFragment"
+        android:label="WorkoutsFragment">
+        <action
+            android:id="@+id/action_workoutsFragment_to_createWorkoutFragment"
+            app:destination="@id/createWorkoutFragment" />
+        <action
+            android:id="@+id/action_workoutsFragment_to_workoutDetailsFragment"
+            app:destination="@id/workoutDetailsFragment" />
+        <action
+            android:id="@+id/action_workoutsFragment_to_createWorkoutFragment2"
+            app:destination="@id/createWorkoutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createWorkout2Fragment"
+        android:name="com.example.sportjournal.fragments.CreateWorkout2Fragment"
+        android:label="CreateWorkout2Fragment">
+        <action
+            android:id="@+id/action_createWorkout2Fragment_to_workoutsFragment"
+            app:destination="@id/workoutsFragment"
+            app:popUpTo="@+id/nav_graph_main"
+            app:popUpToInclusive="true" />
+        <argument android:name="workoutId" />
+    </fragment>
+    <fragment
+        android:id="@+id/createWorkoutFragment"
+        android:name="com.example.sportjournal.fragments.CreateWorkoutFragment"
+        android:label="CreateWorkoutFragment">
+        <action
+            android:id="@+id/action_createWorkoutFragment_to_createWorkout2Fragment"
+            app:destination="@id/createWorkout2Fragment"
+            app:popUpTo="@+id/workoutsFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="routineId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <argument
+            android:name="planId"
+            android:defaultValue="0"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_createWorkoutFragment_to_chooseExercisesFragment"
+            app:destination="@id/chooseExercisesFragment" />
+        <argument
+            android:name="exerciseList"
+            android:defaultValue="@null"
+            app:argType="com.example.sportjournal.models.Exercise[]"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/workoutDetailsFragment"
+        android:name="com.example.sportjournal.fragments.WorkoutDetailsFragment"
+        android:label="WorkoutDetailsFragment">
+        <argument android:name="workoutId" />
+        <argument android:name="workoutName" />
+        <argument android:name="workoutDate" />
+        <argument android:name="workoutDifficulty" />
+        <action
+            android:id="@+id/action_workoutDetailsFragment_to_workoutsFragment"
+            app:destination="@id/workoutsFragment"
+            app:popUpTo="@+id/nav_graph_main"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="totalWeight"
+            app:argType="float" />
+    </fragment>
+    <fragment
+        android:id="@+id/chooseExercisesFragment"
+        android:name="com.example.sportjournal.fragments.ChooseExercisesFragment"
+        android:label="ChooseExercisesFragment">
+        <action
+            android:id="@+id/action_chooseExercisesFragment_to_createWorkoutFragment"
+            app:destination="@id/createWorkoutFragment"
+            app:popUpTo="@+id/workoutsFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
 </navigation>
