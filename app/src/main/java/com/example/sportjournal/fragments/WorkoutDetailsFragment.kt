@@ -23,15 +23,15 @@ import com.google.firebase.database.DatabaseReference
 class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
 
     private lateinit var binding: FragmentWorkoutDetailsBinding
-    private lateinit var mToolbar: MaterialToolbar
-    private lateinit var mWorkoutId: String
-    private lateinit var mWorkoutName: String
-    private lateinit var mWorkoutDate: String
-    private lateinit var mWorkoutDifficulty: String
-    private lateinit var mWorkoutNameView: TextView
-    private lateinit var mWorkoutDateView: TextView
-    private lateinit var mWorkoutDifficultyView: TextView
-    private lateinit var mWorkoutDesk: TextInputEditText
+    private lateinit var toolbar: MaterialToolbar
+    private lateinit var workoutId: String
+    private lateinit var workoutName: String
+    private lateinit var workoutDate: String
+    private lateinit var workoutDifficulty: String
+    private lateinit var workoutNameView: TextView
+    private lateinit var workoutDateView: TextView
+    private lateinit var workoutDifficultyView: TextView
+    private lateinit var workoutDesk: TextInputEditText
     private lateinit var workoutDescText: String
     private lateinit var workoutReference: DatabaseReference
     private lateinit var exerciseAdapter: ExerciseSecondAdapter
@@ -44,31 +44,31 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
 
         val args: WorkoutDetailsFragmentArgs by navArgs()
 
-        mWorkoutId = args.workoutId
-        mWorkoutName = args.workoutName
-        mWorkoutDate = args.workoutDate
-        mWorkoutDifficulty = args.workoutDifficulty
+        workoutId = args.workoutId
+        workoutName = args.workoutName
+        workoutDate = args.workoutDate
+        workoutDifficulty = args.workoutDifficulty
         val totalWeight = args.totalWeight
 
-        mWorkoutNameView = view.findViewById(R.id.workout_name)
-        mWorkoutDateView = view.findViewById(R.id.workout_date)
-        mWorkoutDifficultyView = view.findViewById(R.id.workout_difficulty)
-        mWorkoutDesk = view.findViewById(R.id.workout_desc_input)
+        workoutNameView = view.findViewById(R.id.workout_name)
+        workoutDateView = view.findViewById(R.id.workout_date)
+        workoutDifficultyView = view.findViewById(R.id.workout_difficulty)
+        workoutDesk = view.findViewById(R.id.workout_desc_input)
 
-        mWorkoutNameView.text = mWorkoutName
-        mWorkoutDateView.text = mWorkoutDate
-        mWorkoutDifficultyView.text =
-            resources.getString(R.string.workout_difficulty, mWorkoutDifficulty.toInt())
+        workoutNameView.text = workoutName
+        workoutDateView.text = workoutDate
+        workoutDifficultyView.text =
+            resources.getString(R.string.workout_difficulty, workoutDifficulty.toInt())
 
         workoutReference =
-            REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_WORKOUTS).child(mWorkoutId)
+            REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_WORKOUTS).child(workoutId)
 
         workoutReference.child(
             WORKOUT_DESC
         ).addListenerForSingleValueEvent(AppValueEventListener {
             workoutDescText = it.value.toString()
             if (workoutDescText == "null") workoutDescText = ""
-            mWorkoutDesk.setText(workoutDescText)
+            workoutDesk.setText(workoutDescText)
         })
 
         exerciseAdapter = ExerciseSecondAdapter(
@@ -81,8 +81,8 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
         exerciseRV.adapter = exerciseAdapter
         setExerciseRVData()
 
-        mToolbar = view.findViewById(R.id.toolbar)
-        mToolbar.apply {
+        toolbar = view.findViewById(R.id.toolbar)
+        toolbar.apply {
             inflateMenu(R.menu.details_menu_bar)
             menu.apply {
                 findItem(R.id.delete).setOnMenuItemClickListener {
@@ -93,7 +93,7 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
                         setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                             findNavController().navigate(R.id.action_workoutDetailsFragment_to_workoutsFragment)
                             REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_WORKOUTS)
-                                .child(mWorkoutId).removeValue()
+                                .child(workoutId).removeValue()
                         }
 
                         setNegativeButton(resources.getString(R.string.no)) { _, _ -> }
@@ -121,7 +121,7 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
     }
 
     private fun saveChanges() {
-        workoutReference.child(WORKOUT_DESC).setValue(mWorkoutDesk.text.toString())
+        workoutReference.child(WORKOUT_DESC).setValue(workoutDesk.text.toString())
     }
 
 
@@ -132,10 +132,12 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
                 ds1.children.forEach { ds2 ->
                     val exercise = ds2.getValue(Exercise::class.java) ?: Exercise()
                     val roundsList = ArrayList<Round>()
+
                     ds2.child(NODE_ROUNDS).children.forEach {
                         val round = it.getValue(Round::class.java) ?: Round()
                         roundsList.add(round)
                     }
+
                     viewModel.exerciseGroups.add(Pair(exercise, roundsList))
                     exerciseAdapter.notifyDataSetChanged()
                 }

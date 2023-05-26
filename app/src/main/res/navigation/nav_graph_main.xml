@@ -6,68 +6,71 @@
     app:startDestination="@id/workoutsFragment">
 
     <fragment
-        android:id="@+id/calendarFragment"
-        android:name="com.example.sportjournal.fragments.CalendarFragment"
-        android:label="CalendarFragment" />
-    <fragment
         android:id="@+id/statisticsFragment"
         android:name="com.example.sportjournal.fragments.StatisticsFragment"
         android:label="StatisticsFragment" />
-    <navigation
-        android:id="@+id/navigation"
-        app:startDestination="@id/plansFragment">
-        <fragment
-            android:id="@+id/plansFragment"
-            android:name="com.example.sportjournal.fragments.PlansFragment"
-            android:label="PlansFragment">
-            <action
-                android:id="@+id/action_plansFragment_to_planDetailsFragment"
-                app:destination="@id/planDetailsFragment" />
-            <action
-                android:id="@+id/action_plansFragment_to_createPlanDialogFragment"
-                app:destination="@id/createPlanDialogFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/planDetailsFragment"
-            android:name="com.example.sportjournal.fragments.PlanDetailsFragment"
-            android:label="PlanDetailsFragment">
-            <argument android:name="planName" />
-            <action
-                android:id="@+id/action_planDetailsFragment_to_createRoutineFragment"
-                app:destination="@id/createRoutineFragment" />
-            <argument android:name="planId" />
-            <action
-                android:id="@+id/action_planDetailsFragment_to_plansFragment"
-                app:destination="@id/plansFragment"
-                app:popUpTo="@id/navigation"
-                app:popUpToInclusive="true" />
-        </fragment>
-        <dialog
-            android:id="@+id/createPlanDialogFragment"
-            android:name="com.example.sportjournal.fragments.CreatePlanDialogFragment"
-            android:label="CreatePlanDialogFragment">
-            <action
-                android:id="@+id/action_createPlanDialogFragment_to_planDetailsFragment"
-                app:destination="@id/planDetailsFragment" />
-            <action
-                android:id="@+id/action_createPlanDialogFragment_to_plansFragment"
-                app:destination="@id/plansFragment" />
-        </dialog>
-        <fragment
-            android:id="@+id/createRoutineFragment"
-            android:name="com.example.sportjournal.fragments.CreateRoutineFragment"
-            android:label="CreateRoutineFragment">
-            <action
-                android:id="@+id/action_createRoutineFragment_to_planDetailsFragment"
-                app:destination="@id/planDetailsFragment"
-                app:popUpTo="@id/navigation"
-                app:popUpToInclusive="true" />
-            <argument android:name="planId" />
-            <argument android:name="planName" />
-            <argument android:name="routineId" />
-        </fragment>
-    </navigation>
-
+    <fragment
+        android:id="@+id/plansFragment"
+        android:name="com.example.sportjournal.fragments.PlansFragment"
+        android:label="PlansFragment">
+        <action
+            android:id="@+id/action_plansFragment_to_planDetailsFragment"
+            app:destination="@id/planDetailsFragment" />
+        <action
+            android:id="@+id/action_plansFragment_to_createPlanDialogFragment"
+            app:destination="@id/createPlanDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/planDetailsFragment"
+        android:name="com.example.sportjournal.fragments.PlanDetailsFragment"
+        android:label="PlanDetailsFragment">
+        <argument android:name="planName" />
+        <action
+            android:id="@+id/action_planDetailsFragment_to_createRoutineFragment"
+            app:destination="@id/createRoutineFragment" />
+        <argument android:name="planId" />
+        <action
+            android:id="@+id/action_planDetailsFragment_to_plansFragment"
+            app:destination="@id/plansFragment"
+            app:popUpTo="@id/plansFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <dialog
+        android:id="@+id/createPlanDialogFragment"
+        android:name="com.example.sportjournal.fragments.CreatePlanDialogFragment"
+        android:label="CreatePlanDialogFragment">
+        <action
+            android:id="@+id/action_createPlanDialogFragment_to_planDetailsFragment"
+            app:destination="@id/planDetailsFragment" />
+        <action
+            android:id="@+id/action_createPlanDialogFragment_to_plansFragment"
+            app:destination="@id/plansFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/createRoutineFragment"
+        android:name="com.example.sportjournal.fragments.CreateRoutineFragment"
+        android:label="CreateRoutineFragment">
+        <action
+            android:id="@+id/action_createRoutineFragment_to_planDetailsFragment"
+            app:destination="@id/planDetailsFragment"
+            app:popUpTo="@id/plansFragment"
+            app:popUpToInclusive="false" />
+        <argument android:name="planId" />
+        <argument android:name="planName" />
+        <argument android:name="routineId" />
+        <argument
+            android:name="exerciseList"
+            android:defaultValue="@null"
+            app:argType="com.example.sportjournal.models.Exercise[]"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_createRoutineFragment_to_chooseExercisesFragment"
+            app:destination="@id/chooseExercisesFragment">
+            <argument
+                android:name="isFromWorkouts"
+                android:defaultValue="false" />
+        </action>
+    </fragment>
     <fragment
         android:id="@+id/workoutsFragment"
         android:name="com.example.sportjournal.fragments.WorkoutsFragment"
@@ -102,22 +105,32 @@
             app:destination="@id/createWorkout2Fragment"
             app:popUpTo="@+id/workoutsFragment"
             app:popUpToInclusive="false" />
-        <argument
-            android:name="routineId"
-            android:defaultValue="0"
-            app:argType="string" />
-        <argument
-            android:name="planId"
-            android:defaultValue="0"
-            app:argType="string" />
         <action
             android:id="@+id/action_createWorkoutFragment_to_chooseExercisesFragment"
-            app:destination="@id/chooseExercisesFragment" />
+            app:destination="@id/chooseExercisesFragment">
+            <argument
+                android:name="isFromWorkouts"
+                android:defaultValue="true" />
+            <argument
+                android:name="planId" />
+            <argument
+                android:name="planName" />
+            <argument
+                android:name="routineId" />
+        </action>
         <argument
             android:name="exerciseList"
             android:defaultValue="@null"
             app:argType="com.example.sportjournal.models.Exercise[]"
             app:nullable="true" />
+        <argument
+            android:name="routineId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument
+            android:name="planId"
+            app:argType="string"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/workoutDetailsFragment"
@@ -145,6 +158,38 @@
             app:destination="@id/createWorkoutFragment"
             app:popUpTo="@+id/workoutsFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_chooseExercisesFragment_to_createRoutineFragment"
+            app:destination="@id/createRoutineFragment"
+            app:popUpTo="@id/plansFragment"
+            app:popUpToInclusive="false">
+            <argument
+                android:name="planId"
+                android:defaultValue="&quot;0&quot;" />
+            <argument
+                android:name="planName"
+                android:defaultValue="&quot;0&quot;" />
+            <argument
+                android:name="routineId"
+                android:defaultValue="&quot;0&quot;" />
+        </action>
+        <argument
+            android:name="isFromWorkouts"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <argument android:name="planId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument android:name="planName"
+            app:argType="string"
+            android:defaultValue="0" />
+        <argument android:name="routineId"
+            app:argType="string"
+            android:defaultValue="0" />
     </fragment>
+    <fragment
+        android:id="@+id/socialFragment"
+        android:name="com.example.sportjournal.fragments.SocialFragment"
+        android:label="SocialFragment" />
 
 </navigation>

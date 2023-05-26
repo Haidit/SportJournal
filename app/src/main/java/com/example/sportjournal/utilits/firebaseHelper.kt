@@ -17,6 +17,7 @@ const val NODE_USERS = "users"
 const val USERNAME = "username"
 const val USER_SPORTS = "sports"
 const val USER_GENDER = "gender"
+const val USER_EMAIL = "email"
 
 const val NODE_WORKOUTS = "workouts"
 const val WORKOUT_ID = "workoutId"
@@ -42,6 +43,9 @@ const val EXERCISE_MUSCLE = "exerciseMuscle"
 const val EXERCISE_TYPE_ID = "exerciseTypeId"
 const val EXERCISE_TYPE = "exerciseType"
 const val WEIGHT = "weight"
+
+const val NODE_REQUESTS = "requests"
+const val NODE_ATHLETES = "athletes"
 
 fun initFirebase() {
     AUTH = FirebaseAuth.getInstance()

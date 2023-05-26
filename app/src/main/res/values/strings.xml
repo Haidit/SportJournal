@@ -111,5 +111,11 @@
     <string name="createNewExercise">Create new exercise</string>
     <string name="exerciseName">Exercise name</string>
     <string name="exercise_type">Exercise type</string>
+    <string name="myAthletes">My athletes</string>
+    <string name="Social">Social</string>
+    <string name="sendRequest">Send a request</string>
+    <string name="email">Email</string>
+    <string name="requestHint">Enter email of your coach</string>
+    <string name="no_email_exception">There are no user with this email! Try again</string>
 
 </resources>

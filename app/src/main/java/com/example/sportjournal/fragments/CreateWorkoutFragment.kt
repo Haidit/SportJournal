@@ -10,6 +10,7 @@ import com.example.sportjournal.ExerciseSecondAdapter
 import com.example.sportjournal.R
 import com.example.sportjournal.WorkoutCreateViewModel
 import com.example.sportjournal.databinding.FragmentCreateWorkoutBinding
+import com.example.sportjournal.models.Exercise
 import com.example.sportjournal.models.Round
 import com.example.sportjournal.models.Weight
 import com.example.sportjournal.models.Workout
@@ -61,21 +62,23 @@ class CreateWorkoutFragment : BaseFragment(R.layout.fragment_create_workout) {
         exerciseRV.adapter = exerciseAdapter
 
 
-        if (args.routineId != "0" && args.planId != "0") {
+        if (args.routineId != "0" || args.planId != "0") {
             REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_PLANS).child(args.planId)
                 .child(NODE_ROUTINES)
-                .child(args.routineId).addValueEventListener(AppValueEventListener { dataSnapshot ->
-                    viewModel.roundsPods.clear()
-                    dataSnapshot.children.forEach { dataSnapshot2 ->
-                        dataSnapshot2.children.forEach {
-                            val round = it.getValue(Round::class.java) ?: Round()
-                            viewModel.roundsPods.add(round)
+                .child(args.routineId).child(NODE_EXERCISES).addListenerForSingleValueEvent(
+                    AppValueEventListener { ds1 ->
+                        ds1.children.forEach { ds2 ->
+                            val exercise = ds2.getValue(Exercise::class.java) ?: Exercise()
+                            val roundsList = ArrayList<Round>()
+                            ds2.child(NODE_ROUNDS).children.forEach {
+                                val round = it.getValue(Round::class.java) ?: Round()
+                                roundsList.add(round)
+                            }
+                            viewModel.exerciseGroups.add(Pair(exercise, roundsList))
+                            exerciseAdapter.notifyDataSetChanged()
                         }
-                    }
-                    exerciseAdapter.notifyDataSetChanged()
-                })
+                    })
         }
-
         binding.addButton.setOnClickListener {
             findNavController().navigate(R.id.action_createWorkoutFragment_to_chooseExercisesFragment)
         }

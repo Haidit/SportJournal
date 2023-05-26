@@ -7,16 +7,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.sportjournal.*
-import com.example.sportjournal.databinding.CreateRoundDialogBinding
+import com.example.sportjournal.CreateRoutineViewModel
+import com.example.sportjournal.ExerciseSecondAdapter
+import com.example.sportjournal.R
 import com.example.sportjournal.databinding.FragmentCreateRoutineBinding
 import com.example.sportjournal.models.Exercise
 import com.example.sportjournal.models.Round
 import com.example.sportjournal.models.Routine
 import com.example.sportjournal.utilits.*
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.DatabaseReference
 
@@ -33,12 +32,13 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
     private lateinit var planPath: DatabaseReference
     private lateinit var routineReference: DatabaseReference
     private lateinit var workoutPerDayNumberView: TextInputEditText
-    private lateinit var fab: FloatingActionButton
+    private lateinit var adapter: ExerciseSecondAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val args: CreateRoutineFragmentArgs by navArgs()
+        val exercises = args.exerciseList
         planId = args.planId
         planName = args.planName
         routineId = args.routineId
@@ -67,29 +67,35 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
                 workoutPerDayNumberView.setText(it.value.toString())
             })
 
-        val adapter =
-            RoundAdapter(requireContext(), viewModel.roundsPods, object : RoundOnClickListener {
-                override fun onClicked(Round: Round) {
-                    showEditRoundDialog(Round, routineReference)
+        if (exercises != null) {
+            for (ex in exercises) {
+                var check = true
+                for (elem in viewModel.exerciseGroups) {
+                    if (elem.first == ex) check = false
                 }
-            })
-        val roundsRV = binding.exerciseList
-        roundsRV.layoutManager = LinearLayoutManager(context)
-        roundsRV.adapter = adapter
-
-        routineReference.addValueEventListener(AppValueEventListener { dataSnapshot ->
-            viewModel.roundsPods.clear()
-            dataSnapshot.children.forEach { dataSnapshot2 ->
-                dataSnapshot2.children.forEach {
-                    val round = it.getValue(Round::class.java) ?: Round()
-                    viewModel.roundsPods.add(round)
+                if (check) {
+                    val exerciseGroup = Pair(ex, ArrayList<Round>())
+                    viewModel.exerciseGroups.add(exerciseGroup)
                 }
             }
-            adapter.notifyDataSetChanged()
-        })
+        }
 
-        fab = binding.addButton
-        fab.setOnClickListener {
+        adapter = ExerciseSecondAdapter(
+            viewModel.exerciseGroups,
+            requireContext(),
+            layoutInflater
+        )
+        val exerciseRV = binding.exerciseList
+        exerciseRV.layoutManager = LinearLayoutManager(context)
+        exerciseRV.adapter = adapter
+        setExerciseRVData()
+
+        binding.addButton.setOnClickListener {
+            val action =
+                CreateRoutineFragmentDirections.actionCreateRoutineFragmentToChooseExercisesFragment(
+                    planId = planId, planName = planName, routineId = routineId
+                )
+            findNavController().navigate(action)
             adapter.notifyDataSetChanged()
         }
 
@@ -101,14 +107,15 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
                         setTitle(resources.getString(R.string.save_changes))
                         setMessage(resources.getString(R.string.alert_check))
                         setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
-                            if (validateForm(routineNameView) && validateForm(routineDayView) &&
-                                validateForm(workoutPerDayNumberView)
+                            if (validateForm(routineNameView) && validateForm(routineDayView) && validateForm(
+                                    workoutPerDayNumberView
+                                )
                             ) {
-                                createRoutine()
+                                updateRoutine()
                                 val action =
                                     CreateRoutineFragmentDirections.actionCreateRoutineFragmentToPlanDetailsFragment(
-                                        planName,
-                                        planId
+                                        planName = planName,
+                                        planId = planId
                                     )
                                 findNavController().navigate(action)
                             }
@@ -126,8 +133,7 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
                         setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                             val action =
                                 CreateRoutineFragmentDirections.actionCreateRoutineFragmentToPlanDetailsFragment(
-                                    planName,
-                                    planId
+                                    planName, planId
                                 )
                             findNavController().navigate(action)
                             routineReference.removeValue()
@@ -142,18 +148,43 @@ class CreateRoutineFragment : BaseFragment(R.layout.fragment_create_routine) {
         }
     }
 
-    private fun createRoutine() {
+    override fun onStop() {
+        super.onStop()
+        viewModel.exerciseGroups.clear()
+    }
+
+    private fun updateRoutine() {
         val routine = Routine(
             routineNameView.text.toString(),
             routineId,
             workoutPerDayNumberView.text.toString().toInt(),
             routineDayView.text.toString().toInt()
         )
-        val dateMap = mutableMapOf<String, Any>()
-        dateMap[ROUTINE_DAY] = routine.routineDay
-        dateMap[ROUTINE_ID] = routine.routineId
-        dateMap[ROUTINE_PER_DAY_NUMBER] = routine.routinePerDayNumber
-        dateMap[ROUTINE_NAME] = routine.routineName
-        routineReference.updateChildren(dateMap)
+        val dataMap = mutableMapOf<String, Any>()
+        dataMap[ROUTINE_DAY] = routine.routineDay
+        dataMap[ROUTINE_ID] = routine.routineId
+        dataMap[ROUTINE_PER_DAY_NUMBER] = routine.routinePerDayNumber
+        dataMap[ROUTINE_NAME] = routine.routineName
+        routineReference.updateChildren(dataMap)
+
+        viewModel.saveRounds(routineReference)
+        viewModel.exerciseGroups.clear()
     }
+
+    private fun setExerciseRVData() {
+        routineReference.child(NODE_EXERCISES)
+            .addListenerForSingleValueEvent(AppValueEventListener { ds1 ->
+                ds1.children.forEach { ds2 ->
+                    val exercise = ds2.getValue(Exercise::class.java) ?: Exercise()
+                    val roundsList = ArrayList<Round>()
+                    ds2.child(NODE_ROUNDS).children.forEach {
+                        val round = it.getValue(Round::class.java) ?: Round()
+                        roundsList.add(round)
+                    }
+                    viewModel.exerciseGroups.add(Pair(exercise, roundsList))
+                    adapter.notifyDataSetChanged()
+                }
+            })
+    }
+
 }

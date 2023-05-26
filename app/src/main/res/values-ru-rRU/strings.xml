@@ -72,13 +72,24 @@
     <string name="choose_plan">Выберите план</string>
     <string name="choose_routine">Выберите тренировку</string>
     <string name="addWorkoutFromPlan">Выбрать из планов</string>
-    <string name="creatingExerciseAdvise">Если в списке ниже нет нужного Вам упражнения, Вы можете добавить его самостоятельно, нажав на кнопку +</string>
-    <string name="createExercise">Create new exercise</string>
-    <string name="exercises">Exercises</string>
-    <string name="addToWorkout">add to workout</string>
+    <string name="creatingExerciseAdvise">Если в списке ниже нет нужного Вам упражнения, Вы можете добавить его самостоятельно, нажав на кнопку ниже</string>
+    <string name="createExercise">Создать новое упражнение</string>
+    <string name="exercises">Упражнения</string>
+    <string name="addToWorkout">Добавить</string>
 
     <string name="unknown">Неизвестно</string>
-
+    <string-array name="exercise_types_array">
+        <item>Неизвестно</item>
+        <item>Горизонтальные жимы</item>
+        <item>Вертикальные жимы</item>
+        <item>Тазо-доминантные</item>
+        <item>Колено-доминантные</item>
+        <item>Голенностопо-доминантные</item>
+        <item>Тазо-доминантные + колено-доминантные</item>
+        <item>Горизонтальные тяги</item>
+        <item>Вертикальные тяги</item>
+        <item>Мышцы кора</item>
+    </string-array>
     <string name = "firstMuscleGroup">Грудные мышцы</string>
     <string name = "secondMuscleGroup">Мышцы бедра</string>
     <string name = "thirdMuscleGroup">Мышцы поясницы</string>
@@ -90,9 +101,15 @@
     <string name="totalWeight">Общий тоннаж: %1$d кг</string>
     <string name="date_unknown">Дата не указана</string>
     <string name="refresh">Обновить</string>
-    <string name="createNewExercise">Create new exercise</string>
-    <string name="exerciseName">Exercise name</string>
-    <string name="exercise_type">Exercise type</string>
+    <string name="createNewExercise">Создать новое упражнение</string>
+    <string name="exerciseName">Название упражнения</string>
+    <string name="exercise_type">Тип упражнения</string>
     <string name="canceled">Отменено</string>
+    <string name="myAthletes">Мои спортсмены</string>
+    <string name="Social">Тренер</string>
+    <string name="sendRequest">Отправить запрос</string>
+    <string name="email">Email</string>
+    <string name="requestHint">Введите email тренера</string>
+    <string name="no_email_exception">Пользователь с таким email не найден! Попробуйте еще раз.</string>
 
 </resources>

@@ -9,6 +9,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import com.example.sportjournal.R
+import com.example.sportjournal.databinding.FragmentRegistrtationSecondBinding
 import com.example.sportjournal.utilits.*
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.database.DatabaseReference
@@ -16,6 +17,7 @@ import java.util.*
 
 class RegistrationSecondFragment : Fragment(R.layout.fragment_registrtation_second) {
 
+    private lateinit var binding: FragmentRegistrtationSecondBinding
     private lateinit var usernameView: TextInputEditText
     private lateinit var sportsView: TextInputEditText
     private lateinit var birthdayView: TextInputEditText
@@ -24,12 +26,13 @@ class RegistrationSecondFragment : Fragment(R.layout.fragment_registrtation_seco
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding = FragmentRegistrtationSecondBinding.bind(requireView())
         initFirebase()
         val user = REF_DATABASE_ROOT.child(NODE_USERS).child(UID)
 
-        usernameView = view.findViewById(R.id.enterUsername)
-        sportsView = view.findViewById(R.id.enterSport)
-        birthdayView = view.findViewById(R.id.enterDOB)
+        usernameView = binding.enterUsername
+        sportsView = binding.enterSport
+        birthdayView = binding.enterDOB
 
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -37,19 +40,19 @@ class RegistrationSecondFragment : Fragment(R.layout.fragment_registrtation_seco
         val day = c.get(Calendar.DAY_OF_MONTH)
         gender = "Не указан"
 
-        view.findViewById<ImageButton>(R.id.date_btn).setOnClickListener {
+        binding.dateBtn.setOnClickListener {
             val dpd = DatePickerDialog(this.requireContext(), {_,mYear,mMonth,mDay->
                 val mmMonth = mMonth + 1
                 birthdayView.setText("$mDay/$mmMonth/$mYear")
             }, year, month, day)
             dpd.show()
         }
-        view.findViewById<RadioGroup>(R.id.gender_pick_group).setOnCheckedChangeListener { _, checkedId ->
+        binding.genderPickGroup.setOnCheckedChangeListener { _, checkedId ->
             view.findViewById<RadioButton>(checkedId)?.apply{
                 gender = text.toString()
             }
         }
-        view.findViewById<Button>(R.id.doneBtn).setOnClickListener {
+        binding.doneBtn.setOnClickListener {
             editUser(user)
         }
     }

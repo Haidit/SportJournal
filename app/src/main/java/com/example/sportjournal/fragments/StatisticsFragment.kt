@@ -173,7 +173,6 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             val dateToFormatted = LocalDate.parse(dateTo, dateFormatter)
             (date in dateFromFormatted..dateToFormatted)
         }
-
     }
 
 }

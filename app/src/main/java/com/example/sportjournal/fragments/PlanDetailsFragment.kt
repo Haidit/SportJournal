@@ -4,15 +4,15 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sportjournal.PlanDetailsViewModel
-import com.example.sportjournal.R
-import com.example.sportjournal.RoutineAdapter
-import com.example.sportjournal.RoutineOnClickListener
+import com.example.sportjournal.*
+import com.example.sportjournal.databinding.FragmentPlanDetailsBinding
+import com.example.sportjournal.databinding.FragmentPlansBinding
 import com.example.sportjournal.models.Routine
 import com.example.sportjournal.utilits.*
 import com.google.android.material.appbar.MaterialToolbar
@@ -21,35 +21,37 @@ import com.google.firebase.database.DatabaseReference
 
 class PlanDetailsFragment : Fragment(R.layout.fragment_plan_details) {
 
-    private lateinit var mToolbar: MaterialToolbar
-    private lateinit var mFAB: FloatingActionButton
-    private lateinit var mPlanName: String
-    private lateinit var mPlanId: String
+    private lateinit var binding: FragmentPlanDetailsBinding
+    private lateinit var toolbar: MaterialToolbar
+    private lateinit var planName: String
+    private lateinit var planId: String
     private lateinit var planReference: DatabaseReference
+    private val viewModel: PlanDetailsViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val args: PlanDetailsFragmentArgs by navArgs()
-        mPlanName = args.planName
-        mPlanId = args.planId
+        binding = FragmentPlanDetailsBinding.bind(requireView())
 
-        val viewModel = ViewModelProvider(this).get(PlanDetailsViewModel::class.java)
+        val args: PlanDetailsFragmentArgs by navArgs()
+        planName = args.planName
+        planId = args.planId
+
         planReference =
-            REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_PLANS).child(mPlanId)
+            REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_PLANS).child(planId)
 
         val adapter = RoutineAdapter(requireContext(), viewModel.routineList, object : RoutineOnClickListener {
             override fun onClicked(Routine: Routine) {
                 val action =
                     PlanDetailsFragmentDirections.actionPlanDetailsFragmentToCreateRoutineFragment(
-                        mPlanId,
-                        mPlanName,
+                        planId,
+                        planName,
                         Routine.routineId
                     )
                 findNavController().navigate(action)
             }
         })
-        val routinesRV = view.findViewById<RecyclerView>(R.id.routines_list)
+        val routinesRV = binding.routinesList
         routinesRV.layoutManager = LinearLayoutManager(context)
         routinesRV.adapter = adapter
 
@@ -64,9 +66,9 @@ class PlanDetailsFragment : Fragment(R.layout.fragment_plan_details) {
             adapter.notifyDataSetChanged()
         })
 
-        mToolbar = view.findViewById(R.id.toolbar)
-        mToolbar.title = mPlanName
-        mToolbar.apply {
+        toolbar = binding.toolbar
+        toolbar.title = planName
+        toolbar.apply {
             inflateMenu(R.menu.details_menu_bar)
             menu.apply {
                 findItem(R.id.delete).setOnMenuItemClickListener {
@@ -86,14 +88,14 @@ class PlanDetailsFragment : Fragment(R.layout.fragment_plan_details) {
                 true
             }
         }
-        mFAB = view.findViewById(R.id.add_button)
-        mFAB.setOnClickListener {
+
+        binding.addButton.setOnClickListener {
             val newRoutine =
                 REF_DATABASE_ROOT
                     .child(NODE_USERS)
                     .child(UID)
                     .child(NODE_PLANS)
-                    .child(mPlanId)
+                    .child(planId)
                     .child(NODE_ROUTINES)
                     .push()
             val dateMap = mutableMapOf<String, Any>()
@@ -104,8 +106,8 @@ class PlanDetailsFragment : Fragment(R.layout.fragment_plan_details) {
             newRoutine.updateChildren(dateMap)
             val action =
                 PlanDetailsFragmentDirections.actionPlanDetailsFragmentToCreateRoutineFragment(
-                    mPlanId,
-                    mPlanName,
+                    planId,
+                    planName,
                     newRoutine.key.toString()
                 )
             findNavController().navigate(action)
