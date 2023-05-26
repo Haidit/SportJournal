@@ -52,3 +52,5 @@ fun Fragment.validateForm(inputField: AutoCompleteTextView): Boolean {
     }
     return valid
 }
+
+

@@ -5,37 +5,36 @@ import android.view.View
 import android.widget.Button
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.sportjournal.*
 import com.example.sportjournal.databinding.ChoosePlanDialogBinding
 import com.example.sportjournal.databinding.ChooseRoutineDialogBinding
+import com.example.sportjournal.databinding.FragmentWorkoutsBinding
 import com.example.sportjournal.models.Plan
 import com.example.sportjournal.models.Routine
 import com.example.sportjournal.models.Workout
 import com.example.sportjournal.utilits.*
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.DatabaseReference
 
 class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
 
-    private lateinit var mWorkoutsListener: AppValueEventListener
-    private lateinit var mRefWorkouts: DatabaseReference
-    private lateinit var mPlansListener: AppValueEventListener
-    private lateinit var mRefPlans: DatabaseReference
-    private lateinit var mFAB: FloatingActionButton
+    private lateinit var binding: FragmentWorkoutsBinding
+    private val viewModel: WorkoutsViewModel by activityViewModels()
+    private lateinit var workoutsListener: AppValueEventListener
+    private lateinit var refWorkouts: DatabaseReference
+    private lateinit var plansListener: AppValueEventListener
+    private lateinit var refPlans: DatabaseReference
     private lateinit var addButton1: Button
     private lateinit var addButton2: Button
-    private lateinit var mToolbar: MaterialToolbar
     private lateinit var planReference: DatabaseReference
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel = ViewModelProvider(this).get(WorkoutsViewModel::class.java)
+        binding = FragmentWorkoutsBinding.bind(requireView())
 
         val adapter = WorkoutAdapter(viewModel.workoutPods, object : WorkoutOnClickListener {
             override fun onClicked(Workout: Workout) {
@@ -51,39 +50,38 @@ class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
             }
         })
 
-        val workoutsRV = view.findViewById<RecyclerView>(R.id.workouts_list)
+        val workoutsRV = binding.workoutsList
         workoutsRV.layoutManager = LinearLayoutManager(context)
         workoutsRV.adapter = adapter
 
-        mRefWorkouts = REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_WORKOUTS)
-        mWorkoutsListener = AppValueEventListener { dataSnapshot ->
+        refWorkouts = REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_WORKOUTS)
+        workoutsListener = AppValueEventListener { ds ->
             viewModel.workoutPods.clear()
-            dataSnapshot.children.forEach {
+            ds.children.forEach {
                 val workout = it.getValue(Workout::class.java) ?: Workout()
 
                 viewModel.workoutPods.add(0, workout)
             }
             adapter.notifyDataSetChanged()
         }
-        mRefWorkouts.addValueEventListener(mWorkoutsListener)
+        refWorkouts.addValueEventListener(workoutsListener)
 
-        addButton1 = view.findViewById(R.id.add1)
+        addButton1 = binding.add1
+        addButton2 = binding.add2
+
         addButton1.setOnClickListener {
             findNavController().navigate(R.id.action_workoutsFragment_to_createWorkoutFragment)
         }
-
-        addButton2 = view.findViewById(R.id.add2)
         addButton2.setOnClickListener {
-            showChoosePlanDialog(viewModel)
+            showChoosePlanDialog()
         }
 
-        mFAB = view.findViewById(R.id.add_button)
-        mFAB.setOnClickListener {
+        binding.addButton.setOnClickListener {
             addButton1.isVisible = !addButton1.isVisible
             addButton2.isVisible = !addButton2.isVisible
         }
-        mToolbar = view.findViewById(R.id.toolbar)
-        mToolbar.apply {
+
+        binding.toolbar.apply {
             inflateMenu(R.menu.main_menu_bar)
             menu.apply {
                 findItem(R.id.log_out).setOnMenuItemClickListener {
@@ -97,10 +95,10 @@ class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
 
     override fun onPause() {
         super.onPause()
-        mRefWorkouts.removeEventListener(mWorkoutsListener)
+        refWorkouts.removeEventListener(workoutsListener)
     }
 
-    private fun showChoosePlanDialog(viewModel: WorkoutsViewModel) {
+    private fun showChoosePlanDialog() {
         val dialogBinding = ChoosePlanDialogBinding.inflate(layoutInflater)
 
         val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
@@ -109,7 +107,7 @@ class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
         dialog.show()
         val adapter = PlanAdapter(viewModel.plansPods, object : PlanOnClickListener {
             override fun onClicked(Plan: Plan) {
-                showChooseRoutineDialog(viewModel, Plan)
+                showChooseRoutineDialog(Plan)
                 dialog.dismiss()
             }
         })
@@ -118,8 +116,8 @@ class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
         plansRV.layoutManager = LinearLayoutManager(context)
         plansRV.adapter = adapter
 
-        mRefPlans = REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_PLANS)
-        mPlansListener = AppValueEventListener { dataSnapshot ->
+        refPlans = REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_PLANS)
+        plansListener = AppValueEventListener { dataSnapshot ->
             viewModel.plansPods.clear()
             dataSnapshot.children.forEach {
                 val plan = it.getValue(Plan::class.java) ?: Plan()
@@ -128,10 +126,10 @@ class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
             }
             adapter.notifyDataSetChanged()
         }
-        mRefPlans.addValueEventListener(mPlansListener)
+        refPlans.addValueEventListener(plansListener)
     }
 
-    private fun showChooseRoutineDialog(viewModel: WorkoutsViewModel, plan: Plan) {
+    private fun showChooseRoutineDialog(plan: Plan) {
         val dialogBinding = ChooseRoutineDialogBinding.inflate(layoutInflater)
 
         val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(requireContext())

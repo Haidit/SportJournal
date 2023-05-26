@@ -14,7 +14,7 @@ import com.google.firebase.database.DatabaseReference
 
 class CreatePlanDialogFragment : BottomSheetDialogFragment() {
 
-    private lateinit var mPlanName: EditText
+    private lateinit var planName: EditText
     private lateinit var plansPath: DatabaseReference
     private lateinit var currentPlanPath: DatabaseReference
 
@@ -32,11 +32,11 @@ class CreatePlanDialogFragment : BottomSheetDialogFragment() {
         plansPath = REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_PLANS)
 
         view.findViewById<Button>(R.id.add_button).setOnClickListener {
-            mPlanName = view.findViewById(R.id.new_plan_name)
-            createPlan(mPlanName.text.toString())
+            planName = view.findViewById(R.id.new_plan_name)
+            createPlan(planName.text.toString())
             val action =
                 CreatePlanDialogFragmentDirections.actionCreatePlanDialogFragmentToPlanDetailsFragment(
-                    mPlanName.text.toString(),
+                    planName.text.toString(),
                     currentPlanPath.key.toString()
                 )
             findNavController().navigate(action)

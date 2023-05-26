@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sportjournal.ChooseExercisesViewModel
 import com.example.sportjournal.ExerciseTypeAdapter
@@ -33,6 +34,12 @@ class ChooseExercisesFragment : Fragment(R.layout.fragment_choose_exercises) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentChooseExercisesBinding.bind(requireView())
 
+        val args: ChooseExercisesFragmentArgs by navArgs()
+        val isFromWorkouts = args.isFromWorkouts
+        val planId = args.planId
+        var planName = args.planName
+        var routineId = args.routineId
+
         exType = resources.getStringArray(R.array.exercise_types_array)
         mainAdapter = ExerciseTypeAdapter(viewModel.exerciseGroups, requireContext())
         binding.mainRV.layoutManager = LinearLayoutManager(context)
@@ -52,10 +59,18 @@ class ChooseExercisesFragment : Fragment(R.layout.fragment_choose_exercises) {
             var i = 0
             val actEx =
                 Array(viewModel.activeExercises.size) { viewModel.activeExercises[i++] }
-            val action =
+            val action = if (isFromWorkouts) {
                 ChooseExercisesFragmentDirections.actionChooseExercisesFragmentToCreateWorkoutFragment(
                     exerciseList = actEx
                 )
+            } else {
+                ChooseExercisesFragmentDirections.actionChooseExercisesFragmentToCreateRoutineFragment(
+                    exerciseList = actEx,
+                    planId = planId,
+                    planName = planName,
+                    routineId = routineId
+                )
+            }
             viewModel.activeExercises.clear()
             findNavController().navigate(action)
         }

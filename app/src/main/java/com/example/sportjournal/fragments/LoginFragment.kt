@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import com.example.sportjournal.R
+import com.example.sportjournal.databinding.FragmentLoginBinding
 import com.example.sportjournal.models.User
 import com.example.sportjournal.utilits.*
 import com.google.android.material.textfield.TextInputEditText
@@ -12,23 +13,25 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
 
     private lateinit var emailView: TextInputEditText
     private lateinit var passwordView: TextInputEditText
+    private lateinit var binding: FragmentLoginBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding = FragmentLoginBinding.bind(requireView())
         initFirebase()
 
-        setProgressBar(view.findViewById(R.id.progressBar))
-        emailView = view.findViewById(R.id.enterEmail)
-        passwordView = view.findViewById(R.id.enterPassword)
+        setProgressBar(binding.progressBar)
+        emailView = binding.enterEmail
+        passwordView = binding.enterPassword
 
-        view.findViewById<Button>(R.id.login_btn).setOnClickListener {
+        binding.loginBtn.setOnClickListener {
             val email = emailView.text.toString().lowercase()
             val password = passwordView.text.toString()
             signIn(email, password)
         }
 
-        view.findViewById<Button>(R.id.reg_btn).setOnClickListener {
+        binding.regBtn.setOnClickListener {
             val email = emailView.text.toString().lowercase()
             val password = passwordView.text.toString()
             createAccount(email, password)
