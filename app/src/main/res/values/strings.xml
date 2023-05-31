@@ -117,5 +117,9 @@
     <string name="email">Email</string>
     <string name="requestHint">Enter email of your coach</string>
     <string name="no_email_exception">There are no user with this email! Try again</string>
+    <string name="checkWorkouts">Check workouts</string>
+    <string name="checkStatistics">Check statistics</string>
+    <string name="sendPlans">Send plans</string>
+    <string name="choose_workouts">Choose a workout</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sportjournal.R
 import com.example.sportjournal.StatisticsAdapter
@@ -27,14 +28,19 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
     private lateinit var statisticsAdapter: StatisticsAdapter
     private var dateFrom = "01.01.1900"
     private var dateTo = "31.12.2100"
+    private var userID = ""
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val args: StatisticsFragmentArgs by navArgs()
+
+        userID = setId(args.athleteId)
+
         binding = FragmentStatisticsBinding.bind(requireView())
         workoutsReference =
-            REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_WORKOUTS)
+            REF_DATABASE_ROOT.child(NODE_USERS).child(userID).child(NODE_WORKOUTS)
 
         getTotalWeight()
         getStatistics()
@@ -142,12 +148,13 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             resources.getString(R.string.totalWeight, 0)
         workoutsReference.addListenerForSingleValueEvent(AppValueEventListener { ds1 ->
             ds1.children.forEach { ds2 ->
-                if (isBetween(ds2.child(WORKOUT_DATE).value.toString())){
+                if (ds2.child(WEIGHT)
+                        .exists() && isBetween(ds2.child(WORKOUT_DATE).value.toString())) {
                     totalWeight += ds2.child(WEIGHT).child("totalWeight").value.toString().toFloat()
                     notNull = true
                 }
             }
-            if (!notNull)  totalWeight = 1f
+            if (!notNull) totalWeight = 1f
             statisticsAdapter = StatisticsAdapter(
                 viewModel.statistics,
                 totalWeight,
@@ -164,9 +171,9 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun isBetween(dateStr: String): Boolean {
-        return if (dateStr == "Дата не указана" || dateStr == "Date not given"){
+        return if (dateStr == "Дата не указана" || dateStr == "Date not given") {
             false
-        } else{
+        } else {
             val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
             val date = LocalDate.parse(dateStr, dateFormatter)
             val dateFromFormatted = LocalDate.parse(dateFrom, dateFormatter)
@@ -174,5 +181,6 @@ class StatisticsFragment : Fragment(R.layout.fragment_statistics) {
             (date in dateFromFormatted..dateToFormatted)
         }
     }
+
 
 }

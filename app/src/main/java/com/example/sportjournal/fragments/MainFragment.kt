@@ -7,6 +7,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.sportjournal.R
 import com.example.sportjournal.databinding.FragmentMainBinding
+import com.example.sportjournal.utilits.NODE_EXERCISES
+import com.example.sportjournal.utilits.REF_DATABASE_ROOT
 import com.example.sportjournal.utilits.initFirebase
 import com.example.sportjournal.utilits.initUser
 

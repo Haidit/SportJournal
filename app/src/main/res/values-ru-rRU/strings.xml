@@ -111,5 +111,9 @@
     <string name="email">Email</string>
     <string name="requestHint">Введите email тренера</string>
     <string name="no_email_exception">Пользователь с таким email не найден! Попробуйте еще раз.</string>
+    <string name="checkWorkouts">Просмотреть тренировки</string>
+    <string name="checkStatistics">Просмотреть статистику</string>
+    <string name="sendPlans">Отправить планы</string>
+    <string name="choose_workouts">Выберите тренировку</string>
 
 </resources>
