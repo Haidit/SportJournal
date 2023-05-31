@@ -136,7 +136,7 @@ class ChooseExercisesFragment : Fragment(R.layout.fragment_choose_exercises) {
 
     private fun createNewExercise(exerciseName: String, exerciseType: Int) {
         val dataMap = mutableMapOf<String, Any>()
-        dataMap[EXERCISE_MUSCLE] = 0 // Change later
+        dataMap[EXERCISE_MUSCLE] = 0 // To do one day
         dataMap[EXERCISE_TYPE_ID] = exerciseType
         dataMap[EXERCISE_TYPE] = typeIdToTypeConvert(exerciseType)
         dataMap[EXERCISE_NAME] = exerciseName

@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference
 
 class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
 
+    private val viewModel: WorkoutDetailsViewModel by activityViewModels()
     private lateinit var binding: FragmentWorkoutDetailsBinding
     private lateinit var toolbar: MaterialToolbar
     private lateinit var workoutId: String
@@ -35,7 +36,7 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
     private lateinit var workoutDescText: String
     private lateinit var workoutReference: DatabaseReference
     private lateinit var exerciseAdapter: ExerciseSecondAdapter
-    private val viewModel: WorkoutDetailsViewModel by activityViewModels()
+    private var userID = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,16 +45,18 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
 
         val args: WorkoutDetailsFragmentArgs by navArgs()
 
+        userID = setId(args.userID)
+
         workoutId = args.workoutId
         workoutName = args.workoutName
         workoutDate = args.workoutDate
         workoutDifficulty = args.workoutDifficulty
         val totalWeight = args.totalWeight
 
-        workoutNameView = view.findViewById(R.id.workout_name)
-        workoutDateView = view.findViewById(R.id.workout_date)
-        workoutDifficultyView = view.findViewById(R.id.workout_difficulty)
-        workoutDesk = view.findViewById(R.id.workout_desc_input)
+        workoutNameView = binding.workoutName
+        workoutDateView = binding.workoutDate
+        workoutDifficultyView = binding.workoutDifficulty
+        workoutDesk = binding.workoutDescInput
 
         workoutNameView.text = workoutName
         workoutDateView.text = workoutDate
@@ -61,7 +64,7 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
             resources.getString(R.string.workout_difficulty, workoutDifficulty.toInt())
 
         workoutReference =
-            REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_WORKOUTS).child(workoutId)
+            REF_DATABASE_ROOT.child(NODE_USERS).child(userID).child(NODE_WORKOUTS).child(workoutId)
 
         workoutReference.child(
             WORKOUT_DESC
@@ -92,7 +95,7 @@ class WorkoutDetailsFragment : BaseFragment(R.layout.fragment_workout_details) {
 
                         setPositiveButton(resources.getString(R.string.yes)) { _, _ ->
                             findNavController().navigate(R.id.action_workoutDetailsFragment_to_workoutsFragment)
-                            REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_WORKOUTS)
+                            REF_DATABASE_ROOT.child(NODE_USERS).child(userID).child(NODE_WORKOUTS)
                                 .child(workoutId).removeValue()
                         }
 

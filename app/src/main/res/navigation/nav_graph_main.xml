@@ -8,7 +8,12 @@
     <fragment
         android:id="@+id/statisticsFragment"
         android:name="com.example.sportjournal.fragments.StatisticsFragment"
-        android:label="StatisticsFragment" />
+        android:label="StatisticsFragment" >
+        <argument
+            android:name="athleteId"
+            android:defaultValue='0'
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/plansFragment"
         android:name="com.example.sportjournal.fragments.PlansFragment"
@@ -148,6 +153,10 @@
         <argument
             android:name="totalWeight"
             app:argType="float" />
+        <argument
+            android:name="userID"
+            app:argType="string"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/chooseExercisesFragment"
@@ -190,6 +199,13 @@
     <fragment
         android:id="@+id/socialFragment"
         android:name="com.example.sportjournal.fragments.SocialFragment"
-        android:label="SocialFragment" />
+        android:label="SocialFragment" >
+        <action
+            android:id="@+id/action_socialFragment_to_statisticsFragment"
+            app:destination="@id/statisticsFragment" />
+        <action
+            android:id="@+id/action_socialFragment_to_workoutDetailsFragment"
+            app:destination="@id/workoutDetailsFragment" />
+    </fragment>
 
 </navigation>

@@ -10,11 +10,11 @@ import androidx.navigation.navOptions
 import com.example.sportjournal.R
 import com.google.android.material.textfield.TextInputEditText
 
-fun Fragment.showToast(message: String){
-    Toast.makeText(this.context,message,Toast.LENGTH_SHORT).show()
+fun Fragment.showToast(message: String) {
+    Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show()
 }
 
-fun Fragment.baseNavigate(action: Int){
+fun Fragment.baseNavigate(action: Int) {
     findNavController().navigate(
         action,
         bundleOf(),
@@ -29,6 +29,13 @@ fun Fragment.baseNavigate(action: Int){
             popUpTo = R.id.nav_graph
         }
     )
+}
+
+fun setId(id: String): String {
+    if (id != "0") {
+        return id
+    }
+    return UID
 }
 
 fun Fragment.validateForm(inputField: TextInputEditText): Boolean {

@@ -6,12 +6,10 @@ import android.widget.Button
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sportjournal.*
-import com.example.sportjournal.databinding.ChoosePlanDialogBinding
-import com.example.sportjournal.databinding.ChooseRoutineDialogBinding
+import com.example.sportjournal.databinding.ChooseItemDialogBinding
 import com.example.sportjournal.databinding.FragmentWorkoutsBinding
 import com.example.sportjournal.models.Plan
 import com.example.sportjournal.models.Routine
@@ -99,7 +97,7 @@ class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
     }
 
     private fun showChoosePlanDialog() {
-        val dialogBinding = ChoosePlanDialogBinding.inflate(layoutInflater)
+        val dialogBinding = ChooseItemDialogBinding.inflate(layoutInflater)
 
         val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
             .setView(dialogBinding.root)
@@ -112,7 +110,7 @@ class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
             }
         })
 
-        val plansRV = dialogBinding.plansList
+        val plansRV = dialogBinding.itemsList
         plansRV.layoutManager = LinearLayoutManager(context)
         plansRV.adapter = adapter
 
@@ -130,12 +128,15 @@ class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
     }
 
     private fun showChooseRoutineDialog(plan: Plan) {
-        val dialogBinding = ChooseRoutineDialogBinding.inflate(layoutInflater)
+        val dialogBinding = ChooseItemDialogBinding.inflate(layoutInflater)
 
         val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
             .setView(dialogBinding.root)
         val dialog = dialogBuilder.create()
         dialog.show()
+
+        dialogBinding.chooseItemTV.text = resources.getString(R.string.choose_routine)
+
         planReference =
             REF_DATABASE_ROOT.child(NODE_USERS).child(UID).child(NODE_PLANS).child(plan.planId)
 
@@ -154,7 +155,7 @@ class WorkoutsFragment : Fragment(R.layout.fragment_workouts) {
                 }
             })
 
-        val routineRV = dialogBinding.routinesList
+        val routineRV = dialogBinding.itemsList
         routineRV.layoutManager = LinearLayoutManager(context)
         routineRV.adapter = adapter
 
