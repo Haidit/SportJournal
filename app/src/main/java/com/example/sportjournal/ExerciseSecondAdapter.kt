@@ -60,6 +60,7 @@ class ExerciseSecondAdapter(
             count++
             exerciseGroup.second.add(Round(roundId = count.toString()))
             innerAdapter.notifyDataSetChanged()
+            notifyDataSetChanged()
         }
     }
 
