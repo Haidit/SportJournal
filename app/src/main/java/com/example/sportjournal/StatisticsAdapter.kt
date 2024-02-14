@@ -23,7 +23,8 @@ class StatisticsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatisticsHolder {
         val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.statistics_main_pods, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.statistics_main_pods, parent, false)
         return StatisticsHolder(itemView)
     }
 
@@ -31,7 +32,8 @@ class StatisticsAdapter(
         val stat = statistics[position]
         holder.exType.text = stat.first
         holder.kg.text = context.getString(R.string.weight, stat.second.toInt())
-        val perc = (stat.second / totalWeight * 100).roundToInt()
+        val perc =
+            if ((stat.second / totalWeight * 100).isNaN()) 0 else (stat.second / totalWeight * 100).roundToInt()
         holder.percent.text = context.getString(R.string.percent, perc)
     }
 

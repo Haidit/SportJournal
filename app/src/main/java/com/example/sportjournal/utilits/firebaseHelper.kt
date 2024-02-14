@@ -6,12 +6,16 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 
 lateinit var AUTH: FirebaseAuth
 lateinit var DATABASE: FirebaseDatabase
 lateinit var REF_DATABASE_ROOT: DatabaseReference
 lateinit var UID: String
 var USER: User = User()
+
+lateinit var STORAGE_ROOT: StorageReference
 
 const val NODE_USERS = "users"
 const val USERNAME = "username"
@@ -47,11 +51,17 @@ const val WEIGHT = "weight"
 const val NODE_REQUESTS = "requests"
 const val NODE_ATHLETES = "athletes"
 
+const val NODE_SESSIONS = "sessions"
+const val NODE_TIMES = "times"
+const val NODE_TIME = "time"
+const val NODE_AMOUNT = "amount"
+const val NODE_MODE = "mode"
 fun initFirebase() {
     AUTH = FirebaseAuth.getInstance()
     DATABASE =
         Firebase.database("https://sport-journal-d4b7d-default-rtdb.europe-west1.firebasedatabase.app")
     REF_DATABASE_ROOT = DATABASE.reference
+    STORAGE_ROOT = Firebase.storage.reference
     UID = AUTH.currentUser?.uid.toString()
 }
 

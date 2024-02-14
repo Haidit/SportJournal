@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sportjournal.models.ExerciseGroup
@@ -34,13 +35,18 @@ class ExerciseTypeAdapter(
         val exerciseType = exerciseGroups[position]
         holder.exerciseTypeName.text = exerciseType.exercisePair.first
 
-        val innerAdapter = ExerciseAdapter(exerciseType.exercisePair.second, context)
-        holder.innerRV.layoutManager = LinearLayoutManager(context)
-        holder.innerRV.adapter = innerAdapter
+        if (CHOOSE_EXERCISE_MODE) {
+            val innerAdapter = ExerciseAdapter(exerciseType.exercisePair.second, context)
+            holder.innerRV.layoutManager = LinearLayoutManager(context)
+            holder.innerRV.adapter = innerAdapter
+        } else {
+            val innerAdapter = ExercisePicturesAdapter(exerciseType.exercisePair.second, context)
+            holder.innerRV.layoutManager = GridLayoutManager(context, 3)
+            holder.innerRV.adapter = innerAdapter
+        }
 
         val isExpanded: Boolean = exerciseType.expanded
         holder.innerLayout.visibility = if (isExpanded) View.VISIBLE else View.GONE
-
         holder.exerciseTypeCard.setOnClickListener {
             exerciseType.expanded = !exerciseType.expanded
             notifyItemChanged(position)

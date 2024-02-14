@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.sportjournal.CHOOSE_EXERCISE_MODE
 import com.example.sportjournal.ChooseExercisesViewModel
 import com.example.sportjournal.ExerciseTypeAdapter
 import com.example.sportjournal.R
@@ -18,6 +20,7 @@ import com.example.sportjournal.models.Exercise
 import com.example.sportjournal.models.ExerciseGroup
 import com.example.sportjournal.utilits.*
 import com.google.firebase.database.DatabaseReference
+import java.util.Date
 
 class ChooseExercisesFragment : Fragment(R.layout.fragment_choose_exercises) {
 
@@ -30,9 +33,14 @@ class ChooseExercisesFragment : Fragment(R.layout.fragment_choose_exercises) {
     private lateinit var exType: Array<String>
     private lateinit var mainAdapter: ExerciseTypeAdapter
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentChooseExercisesBinding.bind(requireView())
+
+        if (viewModel.begin == 0L) {
+            viewModel.begin = Date().time
+        }
 
         val args: ChooseExercisesFragmentArgs by navArgs()
         val isFromWorkouts = args.isFromWorkouts
@@ -41,18 +49,18 @@ class ChooseExercisesFragment : Fragment(R.layout.fragment_choose_exercises) {
         var routineId = args.routineId
 
         exType = resources.getStringArray(R.array.exercise_types_array)
-        mainAdapter = ExerciseTypeAdapter(viewModel.exerciseGroups, requireContext())
-        binding.mainRV.layoutManager = LinearLayoutManager(context)
-        binding.mainRV.adapter = mainAdapter
+        setAdapter()
 
         exercisesPath = REF_DATABASE_ROOT.child(NODE_EXERCISES)
         uploadData()
 
         binding.addButton.setOnClickListener {
+            viewModel.end = Date().time
             mainAdapter.exerciseGroups.forEach { exType ->
                 exType.exercisePair.second.forEach { ex ->
                     if (ex.active) {
                         viewModel.activeExercises.add(ex)
+                        viewModel.count++
                     }
                 }
             }
@@ -72,6 +80,14 @@ class ChooseExercisesFragment : Fragment(R.layout.fragment_choose_exercises) {
                 )
             }
             viewModel.activeExercises.clear()
+            val sessionPath = REF_DATABASE_ROOT.child(NODE_TIMES).child(UID).child(
+                NODE_SESSIONS
+            ).push()
+            sessionPath.child(NODE_AMOUNT).setValue(viewModel.count)
+            sessionPath.child(NODE_TIME).setValue(viewModel.end - viewModel.begin)
+            var mode = if (CHOOSE_EXERCISE_MODE) "text" else "pictures"
+            sessionPath.child(NODE_MODE).setValue(mode)
+            viewModel.clear()
             findNavController().navigate(action)
         }
 
@@ -141,6 +157,12 @@ class ChooseExercisesFragment : Fragment(R.layout.fragment_choose_exercises) {
         dataMap[EXERCISE_TYPE] = typeIdToTypeConvert(exerciseType)
         dataMap[EXERCISE_NAME] = exerciseName
         userExercisesPath.child(exerciseName).updateChildren(dataMap)
+    }
+
+    private fun setAdapter() {
+        mainAdapter = ExerciseTypeAdapter(viewModel.exerciseGroups, requireContext())
+        binding.mainRV.layoutManager = LinearLayoutManager(context)
+        binding.mainRV.adapter = mainAdapter
     }
 
 }
